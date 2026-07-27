@@ -2,21 +2,37 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { BatteryCharging, ChevronLeft, Clock3, Coffee, Heart, Map, MapPin, Menu, Search, SlidersHorizontal, Sparkles, Star, Wifi, X } from "lucide-react";
-import { cafes, type Cafe } from "@/data/cafes";
+import { getCafes } from "@/lib/cafes";
+import type { Cafe, CafeFeature } from "@/types/cafe";
 import { CafeMap } from "./CafeMap";
+
+const cafes = getCafes();
+const featureLabels: Record<CafeFeature, string> = {
+  wifi: "Wi-Fi",
+  "power-outlets": "電源あり",
+  quiet: "静か",
+  "long-stay-friendly": "長居OK",
+  "open-late": "夜まで営業",
+  spacious: "開放的",
+};
+
+function hoursSummary(cafe: Cafe) {
+  const hours = cafe.businessHours.weekly.monday;
+  return hours.open && hours.close ? `${hours.open}–${hours.close}` : "定休日";
+}
 
 function CafeCard({ cafe, selected, onSelect }: { cafe: Cafe; selected: boolean; onSelect: () => void }) {
   return (
     <article className={`cafe-card ${selected ? "selected" : ""}`}>
       <button className="cafe-card-main" type="button" onClick={onSelect} aria-label={`${cafe.name}の詳細を見る`}>
-        <div className="cafe-photo" style={{ background: `linear-gradient(145deg, ${cafe.color}, #f4ede2)` }}>
+        <div className="cafe-photo" style={{ background: "linear-gradient(145deg, #647d62, #f4ede2)" }}>
           <Coffee size={40} strokeWidth={1.2} />
         </div>
         <div className="card-body">
-          <div className="card-kicker"><MapPin size={13} /> {cafe.area} ・ {cafe.walk}</div>
+          <div className="card-kicker"><MapPin size={13} /> {cafe.area}</div>
           <h3>{cafe.name}</h3>
-          <div className="rating"><Star size={14} fill="currentColor" /> <b>{cafe.rating}</b><span>（{cafe.reviews}件）</span><span className="price">{cafe.price}</span></div>
-          <div className="tags">{cafe.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+          <div className="rating"><Star size={14} fill="currentColor" /> <b>{cafe.googleRating}</b><span>（{cafe.googleUserRatingsTotal}件）</span></div>
+          <div className="tags">{cafe.features.map((feature) => <span key={feature}>{featureLabels[feature]}</span>)}</div>
         </div>
       </button>
       <button className="heart" type="button" aria-label={`${cafe.name}をお気に入りに追加`}><Heart size={18} /></button>
@@ -28,7 +44,7 @@ export function CafeExplorer() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Cafe | null>(null);
   const [mapOpen, setMapOpen] = useState(false);
-  const filtered = useMemo(() => cafes.filter((cafe) => `${cafe.name}${cafe.area}${cafe.tags.join("")}`.toLowerCase().includes(query.toLowerCase())), [query]);
+  const filtered = useMemo(() => cafes.filter((cafe) => `${cafe.name}${cafe.area}${cafe.address}${cafe.features.join("")}`.toLowerCase().includes(query.toLowerCase())), [query]);
 
   useEffect(() => {
     if (!selected && !mapOpen) return;
@@ -82,8 +98,8 @@ export function CafeExplorer() {
 
       {selected && <div className="detail-overlay" role="dialog" aria-modal="true" aria-label={`${selected.name}の詳細`}>
         <button className="detail-back" onClick={() => setSelected(null)}><ChevronLeft /> 一覧へ戻る</button>
-        <div className="detail-visual" style={{ background: `linear-gradient(135deg, ${selected.color}, #efe4d4)` }}><Coffee size={72} strokeWidth={1} /></div>
-        <div className="detail-content"><p className="card-kicker"><MapPin size={14} /> {selected.area} ・ {selected.walk}</p><h2>{selected.name}</h2><div className="rating"><Star size={16} fill="currentColor" /><b>{selected.rating}</b><span>（{selected.reviews}件のレビュー）</span></div><p className="description">落ち着いた空間とおいしいコーヒー。自然光が入る店内で、集中したい日のワークスペースにぴったりです。</p><div className="detail-stats"><div><Wifi /><span>Wi-Fi</span><b>高速・無料</b></div><div><BatteryCharging /><span>電源</span><b>利用可能</b></div><div><Clock3 /><span>営業時間</span><b>{selected.hours}</b></div></div><button className="primary-wide">このカフェへの行き方を見る</button></div>
+        <div className="detail-visual" style={{ background: "linear-gradient(135deg, #647d62, #efe4d4)" }}><Coffee size={72} strokeWidth={1} /></div>
+        <div className="detail-content"><p className="card-kicker"><MapPin size={14} /> {selected.address}</p><h2>{selected.name}</h2><div className="rating"><Star size={16} fill="currentColor" /><b>{selected.googleRating}</b><span>（{selected.googleUserRatingsTotal}件のレビュー）</span></div><p className="description">落ち着いた空間とおいしいコーヒー。自然光が入る店内で、集中したい日のワークスペースにぴったりです。</p><div className="detail-stats"><div><Wifi /><span>Wi-Fi</span><b>高速・無料</b></div><div><BatteryCharging /><span>電源</span><b>利用可能</b></div><div><Clock3 /><span>営業時間</span><b>{hoursSummary(selected)}</b></div></div><a className="primary-wide" href={selected.googleMapsUrl} target="_blank" rel="noreferrer">このカフェへの行き方を見る</a></div>
       </div>}
       <footer><a className="brand" href="#"><span><Coffee size={18} /></span>nomadly</a><p>Find your place. Do your best work.</p><small>© 2026 nomadly</small></footer>
     </div>
