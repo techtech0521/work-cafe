@@ -1,23 +1,25 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BatteryCharging, ChevronLeft, Clock3, Coffee, Heart, Map, MapPin, Menu, Search, SlidersHorizontal, Sparkles, Star, Wifi, X } from "lucide-react";
 import { cafes, type Cafe } from "@/data/cafes";
 import { CafeMap } from "./CafeMap";
 
 function CafeCard({ cafe, selected, onSelect }: { cafe: Cafe; selected: boolean; onSelect: () => void }) {
   return (
-    <article className={`cafe-card ${selected ? "selected" : ""}`} onClick={onSelect}>
-      <div className="cafe-photo" style={{ background: `linear-gradient(145deg, ${cafe.color}, #f4ede2)` }}>
-        <Coffee size={40} strokeWidth={1.2} />
-        <button className="heart" aria-label={`${cafe.name}をお気に入りに追加`}><Heart size={18} /></button>
-      </div>
-      <div className="card-body">
-        <div className="card-kicker"><MapPin size={13} /> {cafe.area} ・ {cafe.walk}</div>
-        <h3>{cafe.name}</h3>
-        <div className="rating"><Star size={14} fill="currentColor" /> <b>{cafe.rating}</b><span>（{cafe.reviews}件）</span><span className="price">{cafe.price}</span></div>
-        <div className="tags">{cafe.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-      </div>
+    <article className={`cafe-card ${selected ? "selected" : ""}`}>
+      <button className="cafe-card-main" type="button" onClick={onSelect} aria-label={`${cafe.name}の詳細を見る`}>
+        <div className="cafe-photo" style={{ background: `linear-gradient(145deg, ${cafe.color}, #f4ede2)` }}>
+          <Coffee size={40} strokeWidth={1.2} />
+        </div>
+        <div className="card-body">
+          <div className="card-kicker"><MapPin size={13} /> {cafe.area} ・ {cafe.walk}</div>
+          <h3>{cafe.name}</h3>
+          <div className="rating"><Star size={14} fill="currentColor" /> <b>{cafe.rating}</b><span>（{cafe.reviews}件）</span><span className="price">{cafe.price}</span></div>
+          <div className="tags">{cafe.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+        </div>
+      </button>
+      <button className="heart" type="button" aria-label={`${cafe.name}をお気に入りに追加`}><Heart size={18} /></button>
     </article>
   );
 }
@@ -27,6 +29,19 @@ export function CafeExplorer() {
   const [selected, setSelected] = useState<Cafe | null>(null);
   const [mapOpen, setMapOpen] = useState(false);
   const filtered = useMemo(() => cafes.filter((cafe) => `${cafe.name}${cafe.area}${cafe.tags.join("")}`.toLowerCase().includes(query.toLowerCase())), [query]);
+
+  useEffect(() => {
+    if (!selected && !mapOpen) return;
+
+    const closeOverlay = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setSelected(null);
+      setMapOpen(false);
+    };
+
+    document.addEventListener("keydown", closeOverlay);
+    return () => document.removeEventListener("keydown", closeOverlay);
+  }, [selected, mapOpen]);
 
   return (
     <div className="app-shell">
@@ -41,12 +56,12 @@ export function CafeExplorer() {
           <div className="eyebrow"><Sparkles size={14} /> YOUR NEXT WORKSPACE</div>
           <h1>仕事がはかどる、<br /><em>お気に入りの場所</em>を。</h1>
           <p>電源、Wi-Fi、居心地のよさ。<br className="mobile-only" />あなたの働き方に合うカフェを見つけよう。</p>
-          <div className="search-box">
+          <form className="search-box" role="search" onSubmit={(event) => event.preventDefault()}>
             <Search size={20} />
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="駅名・エリア・カフェ名で検索" aria-label="カフェを検索" />
-            {query && <button onClick={() => setQuery("")} aria-label="検索をクリア"><X size={18} /></button>}
-            <button className="search-button">検索する</button>
-          </div>
+            {query && <button type="button" onClick={() => setQuery("")} aria-label="検索をクリア"><X size={18} /></button>}
+            <button className="search-button" type="submit">検索する</button>
+          </form>
           <div className="quick-filters"><span>人気の条件</span><button><BatteryCharging size={14} /> 電源あり</button><button><Wifi size={14} /> 高速Wi-Fi</button><button><Clock3 size={14} /> 朝から営業</button></div>
         </section>
 
