@@ -54,8 +54,9 @@ export type Cafe = {
   name: string;
   address: string;
   area: string;
-  latitude: number;
-  longitude: number;
+  /** Persisted coordinates. `null` means that geocoding has not been completed. */
+  latitude: number | null;
+  longitude: number | null;
   features: CafeFeature[];
   businessHours: BusinessHours | null;
   googleMapsUrl: string;
