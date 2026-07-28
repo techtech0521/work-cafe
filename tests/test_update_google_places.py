@@ -2,6 +2,7 @@ import io
 import json
 import os
 import tempfile
+import time
 import unittest
 import urllib.error
 from contextlib import redirect_stderr
@@ -40,6 +41,21 @@ class UpdateGooglePlacesTest(unittest.TestCase):
         stats = places.update_cafes(cafes, "secret", request_json=request)
         self.assertEqual(calls, [(f"{places.API_ROOT}/places/known", places.DETAIL_FIELDS)])
         self.assertEqual(stats["success"], 1)
+
+    def test_mismatched_details_id_is_rejected_without_search(self):
+        original = cafe(googlePlaceId="known", googleRating=4.0)
+        cafes = [original.copy()]
+        calls = []
+
+        def request(url, *_args, **_kwargs):
+            calls.append(url)
+            return {"id": "different", "rating": 5.0}
+
+        with redirect_stderr(io.StringIO()):
+            stats = places.update_cafes(cafes, "secret", request_json=request)
+        self.assertEqual(calls, [f"{places.API_ROOT}/places/known"])
+        self.assertEqual(cafes[0], original)
+        self.assertEqual((stats["success"], stats["failed"]), (0, 1))
 
     def test_missing_place_id_searches_and_saves_confident_match(self):
         cafes = [cafe()]
@@ -95,6 +111,20 @@ class UpdateGooglePlacesTest(unittest.TestCase):
             self.assertEqual(result, 2)
             self.assertEqual(path.read_text(encoding="utf-8"), "{broken")
             self.assertNotIn("secret", stderr.getvalue())
+
+    def test_main_does_not_rewrite_unchanged_json(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "cafes.json"
+            path.write_text(json.dumps([cafe(googlePlaceId="known")]) + "\n", encoding="utf-8")
+            initial_mtime = path.stat().st_mtime_ns
+            time.sleep(0.001)
+            with mock.patch.dict(os.environ, {"GOOGLE_MAPS_API_KEY": "secret"}), \
+                    mock.patch.object(places, "update_cafes", return_value={
+                        "missing": 0, "success": 1, "failed": 0, "changed": 0,
+                    }), mock.patch("sys.stdout", new=io.StringIO()):
+                result = places.main(["--data", str(path)])
+            self.assertEqual(result, 0)
+            self.assertEqual(path.stat().st_mtime_ns, initial_mtime)
 
 
 if __name__ == "__main__":

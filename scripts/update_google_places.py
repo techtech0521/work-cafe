@@ -37,9 +37,14 @@ def _request_json(
     body: dict[str, Any] | None = None,
     attempts: int = 4,
     timeout: float = 10,
-    opener: Callable[..., Any] = urllib.request.urlopen,
-    sleeper: Callable[[float], None] = time.sleep,
+    opener: Callable[..., Any] | None = None,
+    sleeper: Callable[[float], None] | None = None,
 ) -> dict[str, Any]:
+    if attempts < 1:
+        raise ValueError("attempts must be positive")
+    # Resolve these at call time so tests and callers can safely patch stdlib I/O.
+    opener = opener or urllib.request.urlopen
+    sleeper = sleeper or time.sleep
     data = None if body is None else json.dumps(body).encode("utf-8")
     headers = {
         "X-Goog-Api-Key": api_key,
@@ -122,6 +127,8 @@ def update_cafes(
     cafes: list[dict[str, Any]], api_key: str, *, shard_count: int = 1, shard_index: int = 0,
     request_json: Callable[..., dict[str, Any]] = _request_json,
 ) -> dict[str, int]:
+    if shard_count < 1 or not 0 <= shard_index < shard_count:
+        raise ValueError("invalid round-robin shard")
     stats = {"missing": sum(not cafe.get("googlePlaceId") for cafe in cafes), "success": 0, "failed": 0, "changed": 0}
     for index, cafe in enumerate(cafes):
         if index % shard_count != shard_index:
@@ -132,6 +139,8 @@ def update_cafes(
             if place_id:
                 encoded_id = urllib.parse.quote(str(place_id), safe="")
                 place = request_json(f"{API_ROOT}/places/{encoded_id}", api_key, DETAIL_FIELDS)
+                if place.get("id") != place_id:
+                    raise ApiError("Place Details response ID did not match the requested Place ID")
                 is_new = False
             else:
                 response = request_json(
@@ -165,7 +174,6 @@ def _read(path: Path) -> list[dict[str, Any]]:
 
 def _atomic_write(path: Path, cafes: list[dict[str, Any]]) -> None:
     content = json.dumps(cafes, ensure_ascii=False, indent=2) + "\n"
-    json.loads(content)  # Validate the complete representation before touching the destination.
     temporary: str | None = None
     try:
         with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, prefix=f".{path.name}.", delete=False) as output:
@@ -173,6 +181,10 @@ def _atomic_write(path: Path, cafes: list[dict[str, Any]]) -> None:
             output.write(content)
             output.flush()
             os.fsync(output.fileno())
+        # Validate the bytes actually written, rather than only the in-memory value.
+        with open(temporary, encoding="utf-8") as candidate:
+            if json.load(candidate) != cafes:
+                raise RuntimeError("temporary cafe JSON failed validation")
         os.chmod(temporary, path.stat().st_mode)
         os.replace(temporary, path)
     finally:
@@ -198,7 +210,7 @@ def main(argv: list[str] | None = None) -> int:
         stats = update_cafes(cafes, api_key, shard_count=args.shard_count, shard_index=args.shard_index)
         if before != json.dumps(cafes, ensure_ascii=False, separators=(",", ":")):
             _atomic_write(args.data, cafes)
-    except RuntimeError as error:
+    except (RuntimeError, OSError, ValueError) as error:
         print(f"fatal: {error}", file=sys.stderr)
         return 2
     print(f"Place ID未登録数: {stats['missing']} / 成功数: {stats['success']} / 失敗数: {stats['failed']} / 変更数: {stats['changed']}")
