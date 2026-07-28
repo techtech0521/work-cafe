@@ -2,9 +2,7 @@
 
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
-import { getCafes } from "@/lib/cafes";
-
-const cafes = getCafes();
+import type { Cafe } from "@/types/cafe";
 
 const markerIcon = L.divIcon({
   className: "custom-marker",
@@ -13,9 +11,9 @@ const markerIcon = L.divIcon({
   iconAnchor: [18, 18],
 });
 
-export default function Map() {
+export default function Map({ cafes }: { cafes: readonly Cafe[] }) {
   return (
-    <MapContainer center={[35.694, 139.795]} zoom={14} scrollWheelZoom className="map-canvas">
+    <MapContainer center={[34.6937, 135.5023]} zoom={13} scrollWheelZoom className="map-canvas">
       <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       {cafes.map((cafe) => (
         <Marker key={cafe.id} position={[cafe.latitude, cafe.longitude]} icon={markerIcon}>

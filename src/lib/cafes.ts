@@ -62,6 +62,7 @@ function isCafe(value: unknown): value is Cafe {
     "googleMapsUrl",
     "googlePlaceId",
     "googleUpdatedAt",
+    "publishedAt",
   ] as const;
   const numberFields = [
     "latitude",

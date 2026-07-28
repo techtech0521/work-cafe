@@ -118,7 +118,7 @@ export function CafeExplorer() {
                 {!filtered.length && <div className="empty"><Coffee /><h3>検索結果がありません</h3><p>別のエリアや条件で検索してみてください。</p>{hasFilters && <button className="clear-button" onClick={clearFilters}>条件を解除する</button>}</div>}
               </div>
             </div>
-            <aside className={`map-panel ${mapOpen ? "mobile-visible" : ""}`}><button className="map-close" onClick={() => setMapOpen(false)} aria-label="地図を閉じる"><X /></button><CafeMap /><div className="map-caption"><MapPin size={15} /> 表示エリアを移動して検索</div></aside>
+            <aside className={`map-panel ${mapOpen ? "mobile-visible" : ""}`}><button className="map-close" onClick={() => setMapOpen(false)} aria-label="地図を閉じる"><X /></button><CafeMap cafes={filtered} /><div className="map-caption"><MapPin size={15} /> 検索結果を地図に表示</div></aside>
           </div>
         </section>
       </main>

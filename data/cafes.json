@@ -52,7 +52,8 @@
     "googlePlaceId": "sample-kissa-common",
     "googleRating": 4.8,
     "googleUserRatingsTotal": 126,
-    "googleUpdatedAt": "2026-07-27T00:00:00.000Z"
+    "googleUpdatedAt": "2026-07-27T00:00:00.000Z",
+    "publishedAt": "2026-07-20"
   },
   {
     "id": "whitebird-umeda",
@@ -108,7 +109,8 @@
     "googlePlaceId": "sample-woodwork-coffee",
     "googleRating": 4.6,
     "googleUserRatingsTotal": 89,
-    "googleUpdatedAt": "2026-06-18T00:00:00.000Z"
+    "googleUpdatedAt": "2026-06-18T00:00:00.000Z",
+    "publishedAt": "2026-06-10"
   },
   {
     "id": "brooklyn-parlor-shinsaibashi",
@@ -162,6 +164,7 @@
     "googlePlaceId": "sample-nui-lounge",
     "googleRating": 4.5,
     "googleUserRatingsTotal": 214,
-    "googleUpdatedAt": "2026-05-02T00:00:00.000Z"
+    "googleUpdatedAt": "2026-05-02T00:00:00.000Z",
+    "publishedAt": "2026-05-01"
   }
 ]

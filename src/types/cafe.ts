@@ -36,6 +36,8 @@ export type EditorialCafeData = {
   workabilityScore: number;
   coffeeScore: number;
   atmosphereScore: number;
+  /** Date the cafe was first published in this catalogue (YYYY-MM-DD). */
+  publishedAt: string;
 };
 
 /** Values sourced from Google and safe for the Google sync job to replace. */

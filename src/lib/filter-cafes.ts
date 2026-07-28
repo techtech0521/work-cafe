@@ -31,7 +31,7 @@ export function filterCafes<T extends FilterableCafe>(cafes: readonly T[], filte
     switch (filters.sort) {
       case "review-count": return finite(cafe.googleUserRatingsTotal);
       case "editorial": return finite(cafe.workabilityScore);
-      case "newest": return time(cafe.googleUpdatedAt);
+      case "newest": return time(cafe.publishedAt);
       case "google-rating":
       default: return finite(cafe.googleRating);
     }
