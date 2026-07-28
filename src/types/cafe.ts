@@ -5,6 +5,7 @@ export const CAFE_FEATURES = [
   "long-stay-friendly",
   "open-late",
   "spacious",
+  "scenic-view",
 ] as const;
 
 export type CafeFeature = (typeof CAFE_FEATURES)[number];
@@ -35,6 +36,8 @@ export type EditorialCafeData = {
   workabilityScore: number;
   coffeeScore: number;
   atmosphereScore: number;
+  /** Date the cafe was first published in this catalogue (YYYY-MM-DD). */
+  publishedAt: string;
 };
 
 /** Values sourced from Google and safe for the Google sync job to replace. */
@@ -61,4 +64,3 @@ export type Cafe = {
 
 /** Restricts an automated Google update to Google-owned fields only. */
 export type GoogleCafeUpdate = Pick<Cafe, keyof GoogleCafeData>;
-

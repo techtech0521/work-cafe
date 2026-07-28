@@ -1,21 +1,47 @@
 [
   {
-    "id": "kissa-common-kiyosumi-shirakawa",
-    "name": "Kissa Common",
-    "address": "東京都江東区白河2丁目",
-    "area": "清澄白河",
-    "latitude": 35.6819,
-    "longitude": 139.8005,
-    "features": ["wifi", "power-outlets", "quiet"],
+    "id": "brooklyn-roasting-nakanoshima",
+    "name": "Brooklyn Roasting Company 北浜店",
+    "address": "大阪府大阪市中央区北浜2丁目",
+    "area": "中之島",
+    "latitude": 34.6914,
+    "longitude": 135.5063,
+    "features": [
+      "wifi",
+      "power-outlets",
+      "quiet",
+      "scenic-view"
+    ],
     "businessHours": {
       "weekly": {
-        "monday": { "open": "08:00", "close": "20:00" },
-        "tuesday": { "open": "08:00", "close": "20:00" },
-        "wednesday": { "open": "08:00", "close": "20:00" },
-        "thursday": { "open": "08:00", "close": "20:00" },
-        "friday": { "open": "08:00", "close": "20:00" },
-        "saturday": { "open": "08:00", "close": "20:00" },
-        "sunday": { "open": "08:00", "close": "20:00" }
+        "monday": {
+          "open": "08:00",
+          "close": "20:00"
+        },
+        "tuesday": {
+          "open": "08:00",
+          "close": "20:00"
+        },
+        "wednesday": {
+          "open": "08:00",
+          "close": "20:00"
+        },
+        "thursday": {
+          "open": "08:00",
+          "close": "20:00"
+        },
+        "friday": {
+          "open": "08:00",
+          "close": "20:00"
+        },
+        "saturday": {
+          "open": "08:00",
+          "close": "20:00"
+        },
+        "sunday": {
+          "open": "08:00",
+          "close": "20:00"
+        }
       },
       "regularClosedDays": []
     },
@@ -26,27 +52,55 @@
     "googlePlaceId": "sample-kissa-common",
     "googleRating": 4.8,
     "googleUserRatingsTotal": 126,
-    "googleUpdatedAt": "2026-07-27T00:00:00.000Z"
+    "googleUpdatedAt": "2026-07-27T00:00:00.000Z",
+    "publishedAt": "2026-07-20"
   },
   {
-    "id": "woodwork-coffee-kuramae",
-    "name": "WOODWORK Coffee",
-    "address": "東京都台東区蔵前4丁目",
-    "area": "蔵前",
-    "latitude": 35.702,
-    "longitude": 139.7908,
-    "features": ["wifi", "power-outlets", "long-stay-friendly"],
+    "id": "whitebird-umeda",
+    "name": "Whitebird coffee stand",
+    "address": "大阪府大阪市北区曽根崎2丁目",
+    "area": "梅田",
+    "latitude": 34.7006,
+    "longitude": 135.5006,
+    "features": [
+      "wifi",
+      "power-outlets",
+      "long-stay-friendly"
+    ],
     "businessHours": {
       "weekly": {
-        "monday": { "open": "09:00", "close": "19:00" },
-        "tuesday": { "open": "09:00", "close": "19:00" },
-        "wednesday": { "open": null, "close": null },
-        "thursday": { "open": "09:00", "close": "19:00" },
-        "friday": { "open": "09:00", "close": "19:00" },
-        "saturday": { "open": "09:00", "close": "19:00" },
-        "sunday": { "open": "09:00", "close": "19:00" }
+        "monday": {
+          "open": "09:00",
+          "close": "19:00"
+        },
+        "tuesday": {
+          "open": "09:00",
+          "close": "19:00"
+        },
+        "wednesday": {
+          "open": null,
+          "close": null
+        },
+        "thursday": {
+          "open": "09:00",
+          "close": "19:00"
+        },
+        "friday": {
+          "open": "09:00",
+          "close": "19:00"
+        },
+        "saturday": {
+          "open": "09:00",
+          "close": "19:00"
+        },
+        "sunday": {
+          "open": "09:00",
+          "close": "19:00"
+        }
       },
-      "regularClosedDays": ["水曜日"]
+      "regularClosedDays": [
+        "水曜日"
+      ]
     },
     "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=WOODWORK%20Coffee%20%E8%94%B5%E5%89%8D",
     "workabilityScore": 4.6,
@@ -55,25 +109,51 @@
     "googlePlaceId": "sample-woodwork-coffee",
     "googleRating": 4.6,
     "googleUserRatingsTotal": 89,
-    "googleUpdatedAt": "2026-07-27T00:00:00.000Z"
+    "googleUpdatedAt": "2026-06-18T00:00:00.000Z",
+    "publishedAt": "2026-06-10"
   },
   {
-    "id": "nui-lounge-asakusabashi",
-    "name": "Nui. Lounge",
-    "address": "東京都台東区蔵前2丁目",
-    "area": "浅草橋",
-    "latitude": 35.7041,
-    "longitude": 139.795,
-    "features": ["wifi", "spacious", "open-late"],
+    "id": "brooklyn-parlor-shinsaibashi",
+    "name": "Brooklyn Parlor OSAKA",
+    "address": "大阪府大阪市中央区西心斎橋2丁目",
+    "area": "心斎橋",
+    "latitude": 34.6708,
+    "longitude": 135.4992,
+    "features": [
+      "wifi",
+      "spacious",
+      "open-late"
+    ],
     "businessHours": {
       "weekly": {
-        "monday": { "open": "10:00", "close": "23:00" },
-        "tuesday": { "open": "10:00", "close": "23:00" },
-        "wednesday": { "open": "10:00", "close": "23:00" },
-        "thursday": { "open": "10:00", "close": "23:00" },
-        "friday": { "open": "10:00", "close": "23:00" },
-        "saturday": { "open": "10:00", "close": "23:00" },
-        "sunday": { "open": "10:00", "close": "23:00" }
+        "monday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "tuesday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "wednesday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "thursday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "friday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "saturday": {
+          "open": "10:00",
+          "close": "23:00"
+        },
+        "sunday": {
+          "open": "10:00",
+          "close": "23:00"
+        }
       },
       "regularClosedDays": []
     },
@@ -84,6 +164,7 @@
     "googlePlaceId": "sample-nui-lounge",
     "googleRating": 4.5,
     "googleUserRatingsTotal": 214,
-    "googleUpdatedAt": "2026-07-27T00:00:00.000Z"
+    "googleUpdatedAt": "2026-05-02T00:00:00.000Z",
+    "publishedAt": "2026-05-01"
   }
 ]
