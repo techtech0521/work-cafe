@@ -1,16 +1,7 @@
 import Link from "next/link";
 import { MapPin, Star } from "lucide-react";
-import type { Cafe, CafeFeature } from "@/types/cafe";
-
-export const FEATURE_LABELS: Record<CafeFeature, string> = {
-  wifi: "Wi-Fi",
-  "power-outlets": "電源あり",
-  quiet: "静か",
-  "long-stay-friendly": "長居しやすい",
-  "open-late": "夜まで営業",
-  spacious: "広々",
-  "scenic-view": "景色が良い",
-};
+import { FEATURE_LABELS } from "@/lib/cafe-labels";
+import type { Cafe } from "@/types/cafe";
 
 function value(value: number | null) {
   return value === null ? "未登録" : value.toFixed(1);
@@ -23,8 +14,8 @@ export function CafeCard({ cafe }: { cafe: Cafe }) {
         <div className="card-body">
           <p className="card-kicker"><MapPin size={13} />{cafe.area}</p>
           <h3>{cafe.name}</h3>
-          <div className="rating" aria-label="Googleでの評価">
-            <Star size={14} fill="currentColor" />
+          <div className={`rating ${cafe.googleRating === null ? "rating-missing" : ""}`} aria-label="Googleでの評価">
+            <Star size={14} fill={cafe.googleRating === null ? "none" : "currentColor"} />
             <b>{value(cafe.googleRating)}</b>
             <span>{cafe.googleUserRatingsTotal === null ? "（口コミ件数未登録）" : `（${cafe.googleUserRatingsTotal}件）`}</span>
           </div>

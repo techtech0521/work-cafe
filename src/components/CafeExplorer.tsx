@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { BatteryCharging, ChevronLeft, Clock3, Coffee, Heart, Map, MapPin, Menu, Sparkles, Star, Wifi, X } from "lucide-react";
+import { Coffee, Heart, Map, MapPin, Menu, Sparkles, X } from "lucide-react";
 import { getCafes } from "@/lib/cafes";
 import { CAFE_SORTS, filterCafes, type CafeSort } from "@/lib/filter-cafes";
 import { CAFE_FEATURES } from "@/types/cafe";
-import type { Cafe, CafeFeature } from "@/types/cafe";
+import type { CafeFeature } from "@/types/cafe";
 import { CafeMap } from "./CafeMap";
 import { CafeCard } from "./cafe/CafeCard";
 import { AreaSelect, OSAKA_AREAS } from "./search/AreaSelect";
@@ -15,19 +15,12 @@ import { SortSelect } from "./search/SortSelect";
 
 const cafes = getCafes();
 
-function hoursSummary(cafe: Cafe) {
-  if (!cafe.businessHours) return "未登録";
-  const hours = cafe.businessHours.weekly.monday;
-  return hours.open && hours.close ? `${hours.open}–${hours.close}` : "定休日";
-}
-
 export function CafeExplorer() {
   const [query, setQuery] = useState("");
   const [area, setArea] = useState("");
   const [features, setFeatures] = useState<CafeFeature[]>([]);
   const [sort, setSort] = useState<CafeSort>("google-rating");
   const [urlReady, setUrlReady] = useState(false);
-  const [selected, setSelected] = useState<Cafe | null>(null);
   const [mapOpen, setMapOpen] = useState(false);
   const filtered = useMemo(() => filterCafes(cafes, { query, area, features, sort }), [query, area, features, sort]);
   const hasFilters = Boolean(query || area || features.length || sort !== "google-rating");
@@ -62,17 +55,16 @@ export function CafeExplorer() {
   }, [query, area, features, sort, urlReady]);
 
   useEffect(() => {
-    if (!selected && !mapOpen) return;
+    if (!mapOpen) return;
 
     const closeOverlay = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      setSelected(null);
       setMapOpen(false);
     };
 
     document.addEventListener("keydown", closeOverlay);
     return () => document.removeEventListener("keydown", closeOverlay);
-  }, [selected, mapOpen]);
+  }, [mapOpen]);
 
   return (
     <div className="app-shell">
@@ -106,11 +98,6 @@ export function CafeExplorer() {
         </section>
       </main>
 
-      {selected && <div className="detail-overlay" role="dialog" aria-modal="true" aria-label={`${selected.name}の詳細`}>
-        <button className="detail-back" onClick={() => setSelected(null)}><ChevronLeft /> 一覧へ戻る</button>
-        <div className="detail-visual" style={{ background: "linear-gradient(135deg, #647d62, #efe4d4)" }}><Coffee size={72} strokeWidth={1} /></div>
-        <div className="detail-content"><p className="card-kicker"><MapPin size={14} /> {selected.address}</p><h2>{selected.name}</h2><div className="rating"><Star size={16} fill="currentColor" /><b>{selected.googleRating}</b><span>（{selected.googleUserRatingsTotal}件のレビュー）</span></div><p className="description">落ち着いた空間とおいしいコーヒー。自然光が入る店内で、集中したい日のワークスペースにぴったりです。</p><div className="detail-stats"><div><Wifi /><span>Wi-Fi</span><b>高速・無料</b></div><div><BatteryCharging /><span>電源</span><b>利用可能</b></div><div><Clock3 /><span>営業時間</span><b>{hoursSummary(selected)}</b></div></div><a className="primary-wide" href={selected.googleMapsUrl} target="_blank" rel="noreferrer">このカフェへの行き方を見る</a></div>
-      </div>}
       <footer><a className="brand" href="#"><span><Coffee size={18} /></span>nomadly</a><p>Find your place. Do your best work.</p><small>© 2026 nomadly</small></footer>
     </div>
   );

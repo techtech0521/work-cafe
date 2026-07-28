@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ExternalLink, MapPin, Star } from "lucide-react";
 import { notFound } from "next/navigation";
 import { CafeMap } from "@/components/CafeMap";
-import { FEATURE_LABELS } from "@/components/cafe/CafeCard";
+import { FEATURE_LABELS } from "@/lib/cafe-labels";
 import { getCafeById, getCafes } from "@/lib/cafes";
 import type { BusinessHours, DayOfWeek } from "@/types/cafe";
 
@@ -39,7 +39,7 @@ export default async function CafeDetailPage({ params }: { params: Promise<{ id:
       <p className="card-kicker"><MapPin size={15} />{cafe.area}</p>
       <h1>{cafe.name}</h1>
       <p>{cafe.address}</p>
-      <div className="rating"><Star size={17} fill="currentColor" /><b>{displayScore(cafe.googleRating)}</b><span>{cafe.googleUserRatingsTotal === null ? "口コミ件数未登録" : `${cafe.googleUserRatingsTotal}件の口コミ`}</span></div>
+      <div className={`rating ${cafe.googleRating === null ? "rating-missing" : ""}`}><Star size={17} fill={cafe.googleRating === null ? "none" : "currentColor"} /><b>{displayScore(cafe.googleRating)}</b><span>{cafe.googleUserRatingsTotal === null ? "口コミ件数未登録" : `${cafe.googleUserRatingsTotal}件の口コミ`}</span></div>
     </header>
 
     <div className="detail-layout">
