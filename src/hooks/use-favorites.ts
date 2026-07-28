@@ -1,22 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-
-const STORAGE_KEY = "nomadly:favorites";
-const STORAGE_VERSION = 1;
-
-type StoredFavorites = { version: typeof STORAGE_VERSION; favoriteIds: string[] };
-
-function readFavoriteIds(value: string | null, validIds: ReadonlySet<string>): string[] {
-  if (!value) return [];
-  try {
-    const parsed: unknown = JSON.parse(value);
-    if (typeof parsed !== "object" || parsed === null || !("version" in parsed) || parsed.version !== STORAGE_VERSION || !("favoriteIds" in parsed) || !Array.isArray(parsed.favoriteIds)) return [];
-    return [...new Set(parsed.favoriteIds.filter((id): id is string => typeof id === "string" && validIds.has(id)))];
-  } catch {
-    return [];
-  }
-}
+import {
+  FAVORITES_STORAGE_KEY,
+  parseStoredFavorites,
+  serializeFavorites,
+} from "@/lib/favorites-storage";
 
 /** Client-only favorite state, persisted as a versioned localStorage payload. */
 export function useFavorites(validCafeIds: readonly string[]) {
@@ -29,7 +18,10 @@ export function useFavorites(validCafeIds: readonly string[]) {
     let cancelled = false;
     let restored: string[] = [];
     try {
-      restored = readFavoriteIds(window.localStorage.getItem(STORAGE_KEY), validIds);
+      restored = parseStoredFavorites(
+        window.localStorage.getItem(FAVORITES_STORAGE_KEY),
+        validIds,
+      );
     } catch {
       // Privacy modes and storage policies may make localStorage unavailable.
     }
@@ -43,13 +35,25 @@ export function useFavorites(validCafeIds: readonly string[]) {
 
   useEffect(() => {
     if (!isLoaded) return;
-    const payload: StoredFavorites = { version: STORAGE_VERSION, favoriteIds };
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      window.localStorage.setItem(
+        FAVORITES_STORAGE_KEY,
+        serializeFavorites(favoriteIds),
+      );
     } catch {
       // Keep the in-memory experience working when storage is full or blocked.
     }
   }, [favoriteIds, isLoaded]);
+
+  useEffect(() => {
+    const restoreFromAnotherTab = (event: StorageEvent) => {
+      if (event.key !== FAVORITES_STORAGE_KEY) return;
+      setFavoriteIds(parseStoredFavorites(event.newValue, validIds));
+    };
+
+    window.addEventListener("storage", restoreFromAnotherTab);
+    return () => window.removeEventListener("storage", restoreFromAnotherTab);
+  }, [validIds]);
 
   const favoriteIdSet = useMemo(() => new Set(favoriteIds), [favoriteIds]);
   const isFavorite = useCallback((id: string) => favoriteIdSet.has(id), [favoriteIdSet]);

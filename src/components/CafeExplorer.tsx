@@ -99,7 +99,7 @@ export function CafeExplorer() {
               <div className="list-meta"><b>{filtered.length}件</b>のカフェが見つかりました <button onClick={() => setMapOpen(!mapOpen)}><Map size={15} /> 地図で見る</button></div>
               <div className="cards">
                 {filtered.map((cafe) => <CafeCard key={cafe.id} cafe={cafe} favorite={isFavorite(cafe.id)} onToggleFavorite={toggleFavorite} selected={visibleSelectedCafeId === cafe.id} onSelect={setSelectedCafeId} />)}
-                {!filtered.length && <div className="empty"><Coffee /><h3>{favoritesOnly ? "お気に入りのカフェがありません" : "検索結果がありません"}</h3><p>{favoritesOnly ? "カードのハートからお気に入りを追加できます。" : "別のエリアや条件で検索してみてください。"}</p>{hasFilters && <button className="clear-button" onClick={clearFilters}>条件を解除する</button>}</div>}
+                {!filtered.length && <div className="empty"><Coffee /><h3>{favoritesOnly ? "お気に入りのカフェがありません" : "検索結果がありません"}</h3><p>{favoritesOnly ? "条件を解除して、カードのハートからお気に入りを追加してください。" : "別のエリアや条件で検索してみてください。"}</p>{hasFilters && <button className="clear-button" onClick={clearFilters}>条件を解除する</button>}</div>}
               </div>
             </div>
             <aside className={`map-panel ${mapOpen ? "mobile-visible" : ""}`}><button className="map-close" onClick={() => setMapOpen(false)} aria-label="地図を閉じる"><X /></button><CafeMap cafes={filtered} selectedCafeId={visibleSelectedCafeId} onSelectCafe={setSelectedCafeId} /><div className="map-caption"><MapPin size={15} /> 検索結果を地図に表示</div></aside>
