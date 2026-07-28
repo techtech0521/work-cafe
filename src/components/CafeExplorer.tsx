@@ -24,6 +24,7 @@ export function CafeExplorer() {
   const [mapOpen, setMapOpen] = useState(false);
   const [selectedCafeId, setSelectedCafeId] = useState<string>();
   const filtered = useMemo(() => filterCafes(cafes, { query, area, features, sort }), [query, area, features, sort]);
+  const visibleSelectedCafeId = filtered.some(({ id }) => id === selectedCafeId) ? selectedCafeId : undefined;
   const hasFilters = Boolean(query || area || features.length || sort !== "google-rating");
   const clearFilters = () => { setQuery(""); setArea(""); setFeatures([]); setSort("google-rating"); };
 
@@ -90,11 +91,11 @@ export function CafeExplorer() {
             <div className="list-panel">
               <div className="list-meta"><b>{filtered.length}件</b>のカフェが見つかりました <button onClick={() => setMapOpen(!mapOpen)}><Map size={15} /> 地図で見る</button></div>
               <div className="cards">
-                {filtered.map((cafe) => <CafeCard key={cafe.id} cafe={cafe} selected={selectedCafeId === cafe.id} onSelect={setSelectedCafeId} />)}
+                {filtered.map((cafe) => <CafeCard key={cafe.id} cafe={cafe} selected={visibleSelectedCafeId === cafe.id} onSelect={setSelectedCafeId} />)}
                 {!filtered.length && <div className="empty"><Coffee /><h3>検索結果がありません</h3><p>別のエリアや条件で検索してみてください。</p>{hasFilters && <button className="clear-button" onClick={clearFilters}>条件を解除する</button>}</div>}
               </div>
             </div>
-            <aside className={`map-panel ${mapOpen ? "mobile-visible" : ""}`}><button className="map-close" onClick={() => setMapOpen(false)} aria-label="地図を閉じる"><X /></button><CafeMap cafes={filtered} selectedCafeId={selectedCafeId} onSelectCafe={setSelectedCafeId} /><div className="map-caption"><MapPin size={15} /> 検索結果を地図に表示</div></aside>
+            <aside className={`map-panel ${mapOpen ? "mobile-visible" : ""}`}><button className="map-close" onClick={() => setMapOpen(false)} aria-label="地図を閉じる"><X /></button><CafeMap cafes={filtered} selectedCafeId={visibleSelectedCafeId} onSelectCafe={setSelectedCafeId} /><div className="map-caption"><MapPin size={15} /> 検索結果を地図に表示</div></aside>
           </div>
         </section>
       </main>

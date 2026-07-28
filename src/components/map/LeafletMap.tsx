@@ -6,6 +6,7 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { getMappedCafes } from "@/lib/cafe-coordinates";
 import type { CafeMapProps } from "./CafeMap";
 
 const OSAKA_CENTER: L.LatLngExpression = [34.6937, 135.5023];
@@ -19,12 +20,8 @@ L.Icon.Default.mergeOptions({
 const defaultMarkerIcon = new L.Icon.Default();
 const selectedMarkerIcon = new L.Icon.Default({ className: "cafe-marker-selected" });
 
-function hasCoordinates(cafe: CafeMapProps["cafes"][number]): cafe is typeof cafe & { latitude: number; longitude: number } {
-  return Number.isFinite(cafe.latitude) && Number.isFinite(cafe.longitude);
-}
-
 export default function LeafletMap({ cafes, selectedCafeId, onSelectCafe }: CafeMapProps) {
-  const mappedCafes = cafes.filter(hasCoordinates);
+  const mappedCafes = getMappedCafes(cafes);
 
   return (
     <MapContainer center={OSAKA_CENTER} zoom={13} scrollWheelZoom className="map-canvas">
@@ -35,6 +32,7 @@ export default function LeafletMap({ cafes, selectedCafeId, onSelectCafe }: Cafe
           position={[cafe.latitude, cafe.longitude]}
           eventHandlers={{ click: () => onSelectCafe?.(cafe.id), mouseover: () => onSelectCafe?.(cafe.id) }}
           icon={selectedCafeId === cafe.id ? selectedMarkerIcon : defaultMarkerIcon}
+          zIndexOffset={selectedCafeId === cafe.id ? 1000 : 0}
         >
           <Popup>
             <strong>{cafe.name}</strong><br />{cafe.area}<br />
