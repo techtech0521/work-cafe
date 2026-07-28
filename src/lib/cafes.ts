@@ -31,6 +31,7 @@ function isCafeFeature(value: unknown): value is CafeFeature {
 
 function isBusinessHours(value: unknown): value is BusinessHours {
   if (!isRecord(value) || !isRecord(value.weekly)) return false;
+  const weekly = value.weekly;
   if (
     !Array.isArray(value.regularClosedDays) ||
     !value.regularClosedDays.every((day) => typeof day === "string")
@@ -39,7 +40,7 @@ function isBusinessHours(value: unknown): value is BusinessHours {
   }
 
   return DAYS.every((day) => {
-    const hours = value.weekly[day];
+    const hours = weekly[day];
     return (
       isRecord(hours) &&
       (typeof hours.open === "string" || hours.open === null) &&
