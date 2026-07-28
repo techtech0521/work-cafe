@@ -67,11 +67,10 @@ function isCafe(value: unknown): value is Cafe {
   const numberFields = [
     "latitude",
     "longitude",
-    "workabilityScore",
-    "coffeeScore",
-    "atmosphereScore",
-    "googleRating",
-    "googleUserRatingsTotal",
+  ] as const;
+  const nullableNumberFields = [
+    "workabilityScore", "coffeeScore", "atmosphereScore",
+    "googleRating", "googleUserRatingsTotal",
   ] as const;
 
   return (
@@ -83,9 +82,14 @@ function isCafe(value: unknown): value is Cafe {
       const fieldValue = value[field];
       return typeof fieldValue === "number" && Number.isFinite(fieldValue);
     }) &&
+    nullableNumberFields.every((field) => {
+      const fieldValue = value[field];
+      return fieldValue === null ||
+        (typeof fieldValue === "number" && Number.isFinite(fieldValue));
+    }) &&
     Array.isArray(value.features) &&
     value.features.every(isCafeFeature) &&
-    isBusinessHours(value.businessHours)
+    (value.businessHours === null || isBusinessHours(value.businessHours))
   );
 }
 
@@ -107,6 +111,11 @@ const cafes = parseCafes(cafeData);
 /** Returns the curated cafe catalogue as typed data. */
 export function getCafes(): readonly Cafe[] {
   return cafes;
+}
+
+/** Returns one cafe by its stable application-owned identifier. */
+export function getCafeById(id: string): Cafe | undefined {
+  return cafes.find((cafe) => cafe.id === id);
 }
 
 /**
