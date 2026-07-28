@@ -1,20 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { BatteryCharging, ChevronLeft, Clock3, Coffee, Heart, Map, MapPin, Menu, Search, SlidersHorizontal, Sparkles, Star, Wifi, X } from "lucide-react";
+import { BatteryCharging, ChevronLeft, Clock3, Coffee, Heart, Map, MapPin, Menu, Sparkles, Star, Wifi, X } from "lucide-react";
 import { getCafes } from "@/lib/cafes";
+import { CAFE_SORTS, filterCafes, type CafeSort } from "@/lib/filter-cafes";
+import { CAFE_FEATURES } from "@/types/cafe";
 import type { Cafe, CafeFeature } from "@/types/cafe";
 import { CafeMap } from "./CafeMap";
+import { AreaSelect, OSAKA_AREAS } from "./search/AreaSelect";
+import { FEATURE_LABELS, FeatureTagSelect } from "./search/FeatureTagSelect";
+import { SearchForm } from "./search/SearchForm";
+import { SortSelect } from "./search/SortSelect";
 
 const cafes = getCafes();
-const featureLabels: Record<CafeFeature, string> = {
-  wifi: "Wi-Fi",
-  "power-outlets": "電源あり",
-  quiet: "静か",
-  "long-stay-friendly": "長居OK",
-  "open-late": "夜まで営業",
-  spacious: "開放的",
-};
 
 function hoursSummary(cafe: Cafe) {
   const hours = cafe.businessHours.weekly.monday;
@@ -32,7 +30,7 @@ function CafeCard({ cafe, selected, onSelect }: { cafe: Cafe; selected: boolean;
           <div className="card-kicker"><MapPin size={13} /> {cafe.area}</div>
           <h3>{cafe.name}</h3>
           <div className="rating"><Star size={14} fill="currentColor" /> <b>{cafe.googleRating}</b><span>（{cafe.googleUserRatingsTotal}件）</span></div>
-          <div className="tags">{cafe.features.map((feature) => <span key={feature}>{featureLabels[feature]}</span>)}</div>
+          <div className="tags">{cafe.features.map((feature) => <span key={feature}>{FEATURE_LABELS[feature]}</span>)}</div>
         </div>
       </button>
       <button className="heart" type="button" aria-label={`${cafe.name}をお気に入りに追加`}><Heart size={18} /></button>
@@ -42,9 +40,43 @@ function CafeCard({ cafe, selected, onSelect }: { cafe: Cafe; selected: boolean;
 
 export function CafeExplorer() {
   const [query, setQuery] = useState("");
+  const [area, setArea] = useState("");
+  const [features, setFeatures] = useState<CafeFeature[]>([]);
+  const [sort, setSort] = useState<CafeSort>("google-rating");
+  const [urlReady, setUrlReady] = useState(false);
   const [selected, setSelected] = useState<Cafe | null>(null);
   const [mapOpen, setMapOpen] = useState(false);
-  const filtered = useMemo(() => cafes.filter((cafe) => `${cafe.name}${cafe.area}${cafe.address}${cafe.features.join("")}`.toLowerCase().includes(query.toLowerCase())), [query]);
+  const filtered = useMemo(() => filterCafes(cafes, { query, area, features, sort }), [query, area, features, sort]);
+  const hasFilters = Boolean(query || area || features.length || sort !== "google-rating");
+  const clearFilters = () => { setQuery(""); setArea(""); setFeatures([]); setSort("google-rating"); };
+
+  useEffect(() => {
+    let cancelled = false;
+    const params = new URLSearchParams(window.location.search);
+    const restoredArea = params.get("area") ?? "";
+    const restoredTags = (params.get("tags") ?? "").split(",").filter((tag): tag is CafeFeature => (CAFE_FEATURES as readonly string[]).includes(tag));
+    const restoredSort = params.get("sort") ?? "";
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setQuery(params.get("q") ?? "");
+      setArea((OSAKA_AREAS as readonly string[]).includes(restoredArea) ? restoredArea : "");
+      setFeatures(restoredTags);
+      setSort((CAFE_SORTS as readonly string[]).includes(restoredSort) ? restoredSort as CafeSort : "google-rating");
+      setUrlReady(true);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    if (!urlReady) return;
+    const params = new URLSearchParams();
+    if (query) params.set("q", query);
+    if (area) params.set("area", area);
+    if (features.length) params.set("tags", features.join(","));
+    if (sort !== "google-rating") params.set("sort", sort);
+    const search = params.toString();
+    window.history.replaceState(null, "", `${window.location.pathname}${search ? `?${search}` : ""}${window.location.hash}`);
+  }, [query, area, features, sort, urlReady]);
 
   useEffect(() => {
     if (!selected && !mapOpen) return;
@@ -72,23 +104,18 @@ export function CafeExplorer() {
           <div className="eyebrow"><Sparkles size={14} /> YOUR NEXT WORKSPACE</div>
           <h1>仕事がはかどる、<br /><em>お気に入りの場所</em>を。</h1>
           <p>電源、Wi-Fi、居心地のよさ。<br className="mobile-only" />あなたの働き方に合うカフェを見つけよう。</p>
-          <form className="search-box" role="search" onSubmit={(event) => event.preventDefault()}>
-            <Search size={20} />
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="駅名・エリア・カフェ名で検索" aria-label="カフェを検索" />
-            {query && <button type="button" onClick={() => setQuery("")} aria-label="検索をクリア"><X size={18} /></button>}
-            <button className="search-button" type="submit">検索する</button>
-          </form>
-          <div className="quick-filters"><span>人気の条件</span><button><BatteryCharging size={14} /> 電源あり</button><button><Wifi size={14} /> 高速Wi-Fi</button><button><Clock3 size={14} /> 朝から営業</button></div>
+          <SearchForm value={query} onChange={setQuery} />
         </section>
 
         <section className="results-section">
-          <div className="results-heading"><div><p>WORK FRIENDLY CAFÉS</p><h2>おすすめのワークカフェ</h2><span>東京エリアから厳選した、集中できる場所</span></div><button className="filter-button"><SlidersHorizontal size={16} /> 条件を絞り込む</button></div>
+          <div className="results-heading"><div><p>WORK FRIENDLY CAFÉS</p><h2>大阪のワークカフェ</h2><span>大阪エリアから厳選した、集中できる場所</span></div></div>
+          <div className="filter-panel"><AreaSelect value={area} onChange={setArea} /><FeatureTagSelect value={features} onChange={setFeatures} /><SortSelect value={sort} onChange={setSort} />{hasFilters && <button className="clear-button" type="button" onClick={clearFilters}>条件をすべて解除</button>}</div>
           <div className="content-grid">
             <div className="list-panel">
               <div className="list-meta"><b>{filtered.length}件</b>のカフェが見つかりました <button onClick={() => setMapOpen(!mapOpen)}><Map size={15} /> 地図で見る</button></div>
               <div className="cards">
                 {filtered.map((cafe) => <CafeCard key={cafe.id} cafe={cafe} selected={selected?.id === cafe.id} onSelect={() => setSelected(cafe)} />)}
-                {!filtered.length && <div className="empty"><Coffee /><h3>該当するカフェがありません</h3><p>別のエリアや条件で検索してみてください。</p></div>}
+                {!filtered.length && <div className="empty"><Coffee /><h3>検索結果がありません</h3><p>別のエリアや条件で検索してみてください。</p>{hasFilters && <button className="clear-button" onClick={clearFilters}>条件を解除する</button>}</div>}
               </div>
             </div>
             <aside className={`map-panel ${mapOpen ? "mobile-visible" : ""}`}><button className="map-close" onClick={() => setMapOpen(false)} aria-label="地図を閉じる"><X /></button><CafeMap /><div className="map-caption"><MapPin size={15} /> 表示エリアを移動して検索</div></aside>

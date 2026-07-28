@@ -5,6 +5,7 @@ export const CAFE_FEATURES = [
   "long-stay-friendly",
   "open-late",
   "spacious",
+  "scenic-view",
 ] as const;
 
 export type CafeFeature = (typeof CAFE_FEATURES)[number];
@@ -61,4 +62,3 @@ export type Cafe = {
 
 /** Restricts an automated Google update to Google-owned fields only. */
 export type GoogleCafeUpdate = Pick<Cafe, keyof GoogleCafeData>;
-
