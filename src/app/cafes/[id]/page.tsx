@@ -5,6 +5,7 @@ import { CafeMap } from "@/components/map/CafeMap";
 import { FEATURE_LABELS } from "@/lib/cafe-labels";
 import { getCafeById, getCafes } from "@/lib/cafes";
 import type { BusinessHours, DayOfWeek } from "@/types/cafe";
+import { DetailFavoriteButton } from "@/components/cafe/DetailFavoriteButton";
 
 const DAYS: Array<[DayOfWeek, string]> = [
   ["monday", "月"], ["tuesday", "火"], ["wednesday", "水"],
@@ -39,6 +40,7 @@ export default async function CafeDetailPage({ params }: { params: Promise<{ id:
       <p className="card-kicker"><MapPin size={15} />{cafe.area}</p>
       <h1>{cafe.name}</h1>
       <p>{cafe.address}</p>
+      <DetailFavoriteButton cafeId={cafe.id} validCafeIds={getCafes().map(({ id }) => id)} />
       <div className={`rating ${cafe.googleRating === null ? "rating-missing" : ""}`}><Star size={17} fill={cafe.googleRating === null ? "none" : "currentColor"} /><b>{displayScore(cafe.googleRating)}</b><span>{cafe.googleUserRatingsTotal === null ? "口コミ件数未登録" : `${cafe.googleUserRatingsTotal}件の口コミ`}</span></div>
     </header>
 

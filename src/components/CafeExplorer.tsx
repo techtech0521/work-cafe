@@ -12,8 +12,10 @@ import { AreaSelect, OSAKA_AREAS } from "./search/AreaSelect";
 import { FeatureTagSelect } from "./search/FeatureTagSelect";
 import { SearchForm } from "./search/SearchForm";
 import { SortSelect } from "./search/SortSelect";
+import { useFavorites } from "@/hooks/use-favorites";
 
 const cafes = getCafes();
+const cafeIds = cafes.map(({ id }) => id);
 
 export function CafeExplorer() {
   const [query, setQuery] = useState("");
@@ -23,10 +25,15 @@ export function CafeExplorer() {
   const [urlReady, setUrlReady] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
   const [selectedCafeId, setSelectedCafeId] = useState<string>();
-  const filtered = useMemo(() => filterCafes(cafes, { query, area, features, sort }), [query, area, features, sort]);
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const { favoriteIds, isFavorite, toggleFavorite } = useFavorites(cafeIds);
+  const filtered = useMemo(() => {
+    const matches = filterCafes(cafes, { query, area, features, sort });
+    return favoritesOnly ? matches.filter(({ id }) => favoriteIds.includes(id)) : matches;
+  }, [query, area, features, sort, favoritesOnly, favoriteIds]);
   const visibleSelectedCafeId = filtered.some(({ id }) => id === selectedCafeId) ? selectedCafeId : undefined;
-  const hasFilters = Boolean(query || area || features.length || sort !== "google-rating");
-  const clearFilters = () => { setQuery(""); setArea(""); setFeatures([]); setSort("google-rating"); };
+  const hasFilters = Boolean(query || area || features.length || sort !== "google-rating" || favoritesOnly);
+  const clearFilters = () => { setQuery(""); setArea(""); setFeatures([]); setSort("google-rating"); setFavoritesOnly(false); };
 
   useEffect(() => {
     let cancelled = false;
@@ -73,7 +80,7 @@ export function CafeExplorer() {
       <header className="site-header">
         <a className="brand" href="#"><span><Coffee size={18} /></span>nomadly</a>
         <nav><a href="#discover">カフェを探す</a><a href="#guide">使い方</a><a href="#about">nomadlyについて</a></nav>
-        <div className="header-actions"><button className="ghost-button"><Heart size={17} /> お気に入り</button><button className="menu-button" aria-label="メニュー"><Menu /></button></div>
+        <div className="header-actions"><button type="button" className={`ghost-button ${favoritesOnly ? "active" : ""}`} aria-pressed={favoritesOnly} onClick={() => setFavoritesOnly((value) => !value)}><Heart size={17} fill={favoritesOnly ? "currentColor" : "none"} /> お気に入り{favoriteIds.length > 0 && ` (${favoriteIds.length})`}</button><button className="menu-button" aria-label="メニュー"><Menu /></button></div>
       </header>
 
       <main>
@@ -91,8 +98,8 @@ export function CafeExplorer() {
             <div className="list-panel">
               <div className="list-meta"><b>{filtered.length}件</b>のカフェが見つかりました <button onClick={() => setMapOpen(!mapOpen)}><Map size={15} /> 地図で見る</button></div>
               <div className="cards">
-                {filtered.map((cafe) => <CafeCard key={cafe.id} cafe={cafe} selected={visibleSelectedCafeId === cafe.id} onSelect={setSelectedCafeId} />)}
-                {!filtered.length && <div className="empty"><Coffee /><h3>検索結果がありません</h3><p>別のエリアや条件で検索してみてください。</p>{hasFilters && <button className="clear-button" onClick={clearFilters}>条件を解除する</button>}</div>}
+                {filtered.map((cafe) => <CafeCard key={cafe.id} cafe={cafe} favorite={isFavorite(cafe.id)} onToggleFavorite={toggleFavorite} selected={visibleSelectedCafeId === cafe.id} onSelect={setSelectedCafeId} />)}
+                {!filtered.length && <div className="empty"><Coffee /><h3>{favoritesOnly ? "お気に入りのカフェがありません" : "検索結果がありません"}</h3><p>{favoritesOnly ? "条件を解除して、カードのハートからお気に入りを追加してください。" : "別のエリアや条件で検索してみてください。"}</p>{hasFilters && <button className="clear-button" onClick={clearFilters}>条件を解除する</button>}</div>}
               </div>
             </div>
             <aside className={`map-panel ${mapOpen ? "mobile-visible" : ""}`}><button className="map-close" onClick={() => setMapOpen(false)} aria-label="地図を閉じる"><X /></button><CafeMap cafes={filtered} selectedCafeId={visibleSelectedCafeId} onSelectCafe={setSelectedCafeId} /><div className="map-caption"><MapPin size={15} /> 検索結果を地図に表示</div></aside>
