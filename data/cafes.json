@@ -1,0 +1,89 @@
+[
+  {
+    "id": "kissa-common-kiyosumi-shirakawa",
+    "name": "Kissa Common",
+    "address": "東京都江東区白河2丁目",
+    "area": "清澄白河",
+    "latitude": 35.6819,
+    "longitude": 139.8005,
+    "features": ["wifi", "power-outlets", "quiet"],
+    "businessHours": {
+      "weekly": {
+        "monday": { "open": "08:00", "close": "20:00" },
+        "tuesday": { "open": "08:00", "close": "20:00" },
+        "wednesday": { "open": "08:00", "close": "20:00" },
+        "thursday": { "open": "08:00", "close": "20:00" },
+        "friday": { "open": "08:00", "close": "20:00" },
+        "saturday": { "open": "08:00", "close": "20:00" },
+        "sunday": { "open": "08:00", "close": "20:00" }
+      },
+      "regularClosedDays": []
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Kissa%20Common%20%E6%B8%85%E6%BE%84%E7%99%BD%E6%B2%B3",
+    "workabilityScore": 4.8,
+    "coffeeScore": 4.6,
+    "atmosphereScore": 4.7,
+    "googlePlaceId": "sample-kissa-common",
+    "googleRating": 4.8,
+    "googleUserRatingsTotal": 126,
+    "googleUpdatedAt": "2026-07-27T00:00:00.000Z"
+  },
+  {
+    "id": "woodwork-coffee-kuramae",
+    "name": "WOODWORK Coffee",
+    "address": "東京都台東区蔵前4丁目",
+    "area": "蔵前",
+    "latitude": 35.702,
+    "longitude": 139.7908,
+    "features": ["wifi", "power-outlets", "long-stay-friendly"],
+    "businessHours": {
+      "weekly": {
+        "monday": { "open": "09:00", "close": "19:00" },
+        "tuesday": { "open": "09:00", "close": "19:00" },
+        "wednesday": { "open": null, "close": null },
+        "thursday": { "open": "09:00", "close": "19:00" },
+        "friday": { "open": "09:00", "close": "19:00" },
+        "saturday": { "open": "09:00", "close": "19:00" },
+        "sunday": { "open": "09:00", "close": "19:00" }
+      },
+      "regularClosedDays": ["水曜日"]
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=WOODWORK%20Coffee%20%E8%94%B5%E5%89%8D",
+    "workabilityScore": 4.6,
+    "coffeeScore": 4.7,
+    "atmosphereScore": 4.5,
+    "googlePlaceId": "sample-woodwork-coffee",
+    "googleRating": 4.6,
+    "googleUserRatingsTotal": 89,
+    "googleUpdatedAt": "2026-07-27T00:00:00.000Z"
+  },
+  {
+    "id": "nui-lounge-asakusabashi",
+    "name": "Nui. Lounge",
+    "address": "東京都台東区蔵前2丁目",
+    "area": "浅草橋",
+    "latitude": 35.7041,
+    "longitude": 139.795,
+    "features": ["wifi", "spacious", "open-late"],
+    "businessHours": {
+      "weekly": {
+        "monday": { "open": "10:00", "close": "23:00" },
+        "tuesday": { "open": "10:00", "close": "23:00" },
+        "wednesday": { "open": "10:00", "close": "23:00" },
+        "thursday": { "open": "10:00", "close": "23:00" },
+        "friday": { "open": "10:00", "close": "23:00" },
+        "saturday": { "open": "10:00", "close": "23:00" },
+        "sunday": { "open": "10:00", "close": "23:00" }
+      },
+      "regularClosedDays": []
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Nui.%20Lounge%20%E8%94%B5%E5%89%8D",
+    "workabilityScore": 4.5,
+    "coffeeScore": 4.4,
+    "atmosphereScore": 4.8,
+    "googlePlaceId": "sample-nui-lounge",
+    "googleRating": 4.5,
+    "googleUserRatingsTotal": 214,
+    "googleUpdatedAt": "2026-07-27T00:00:00.000Z"
+  }
+]
