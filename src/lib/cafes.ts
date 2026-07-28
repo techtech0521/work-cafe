@@ -64,7 +64,7 @@ function isCafe(value: unknown): value is Cafe {
     "googleUpdatedAt",
     "publishedAt",
   ] as const;
-  const numberFields = [
+  const nullableCoordinateFields = [
     "latitude",
     "longitude",
   ] as const;
@@ -78,9 +78,10 @@ function isCafe(value: unknown): value is Cafe {
       const fieldValue = value[field];
       return typeof fieldValue === "string" && fieldValue.length > 0;
     }) &&
-    numberFields.every((field) => {
+    nullableCoordinateFields.every((field) => {
       const fieldValue = value[field];
-      return typeof fieldValue === "number" && Number.isFinite(fieldValue);
+      return fieldValue === null ||
+        (typeof fieldValue === "number" && Number.isFinite(fieldValue));
     }) &&
     nullableNumberFields.every((field) => {
       const fieldValue = value[field];

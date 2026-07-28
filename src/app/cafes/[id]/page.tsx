@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ExternalLink, MapPin, Star } from "lucide-react";
 import { notFound } from "next/navigation";
-import { CafeMap } from "@/components/CafeMap";
+import { CafeMap } from "@/components/map/CafeMap";
 import { FEATURE_LABELS } from "@/lib/cafe-labels";
 import { getCafeById, getCafes } from "@/lib/cafes";
 import type { BusinessHours, DayOfWeek } from "@/types/cafe";

@@ -7,10 +7,10 @@ function value(value: number | null) {
   return value === null ? "未登録" : value.toFixed(1);
 }
 
-export function CafeCard({ cafe }: { cafe: Cafe }) {
+export function CafeCard({ cafe, selected = false, onSelect }: { cafe: Cafe; selected?: boolean; onSelect?: (id: string) => void }) {
   return (
-    <article className="cafe-card catalogue-card">
-      <Link className="cafe-card-main" href={`/cafes/${cafe.id}`}>
+    <article className={`cafe-card catalogue-card ${selected ? "selected" : ""}`} onMouseEnter={() => onSelect?.(cafe.id)} onFocus={() => onSelect?.(cafe.id)}>
+      <Link className="cafe-card-main" href={`/cafes/${cafe.id}`} aria-current={selected ? "true" : undefined}>
         <div className="card-body">
           <p className="card-kicker"><MapPin size={13} />{cafe.area}</p>
           <h3>{cafe.name}</h3>

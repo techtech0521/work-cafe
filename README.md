@@ -38,7 +38,7 @@ Pull Request と `main` ブランチへの push では、GitHub Actions が `npm
 3. `npm run dev` で一覧・検索・地図マーカー・詳細表示を確認します。
 4. `npm run build` を実行し、型エラーやビルドエラーがないことを確認します。
 
-Leaflet を使用する地図本体は `src/components/Map.tsx` に分離し、`CafeMap.tsx` から `dynamic(..., { ssr: false })` で読み込んでいます。これにより、ブラウザ API を参照する Leaflet がサーバー上で評価されません。
+Leaflet を使用する地図本体は `src/components/map/LeafletMap.tsx` に分離し、`src/components/map/CafeMap.tsx` から `dynamic(..., { ssr: false })` で読み込んでいます。これにより、ブラウザ API を参照する Leaflet がサーバー上で評価されません。
 
 ## 主なディレクトリ
 
@@ -48,3 +48,7 @@ src/
 ├── components/   # 検索・一覧・詳細・地図 UI
 └── data/         # カフェのサンプルデータ
 ```
+
+## カフェ座標の登録方針
+
+住所のジオコーディングはカフェの**初回登録時だけ**行い、確定した `latitude` / `longitude` を `data/cafes.json` に保存します。ページ表示時には外部のジオコーディング API を呼びません。座標を確定できない場合は両方を `null` にして一覧には残し、地図のマーカーからだけ除外します。
