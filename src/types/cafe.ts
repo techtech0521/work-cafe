@@ -33,9 +33,9 @@ export type BusinessHours = {
 
 /** Values researched and maintained by the editorial team. */
 export type EditorialCafeData = {
-  workabilityScore: number;
-  coffeeScore: number;
-  atmosphereScore: number;
+  workabilityScore: number | null;
+  coffeeScore: number | null;
+  atmosphereScore: number | null;
   /** Date the cafe was first published in this catalogue (YYYY-MM-DD). */
   publishedAt: string;
 };
@@ -43,8 +43,8 @@ export type EditorialCafeData = {
 /** Values sourced from Google and safe for the Google sync job to replace. */
 export type GoogleCafeData = {
   googlePlaceId: string;
-  googleRating: number;
-  googleUserRatingsTotal: number;
+  googleRating: number | null;
+  googleUserRatingsTotal: number | null;
   googleUpdatedAt: string;
 };
 
@@ -57,7 +57,7 @@ export type Cafe = {
   latitude: number;
   longitude: number;
   features: CafeFeature[];
-  businessHours: BusinessHours;
+  businessHours: BusinessHours | null;
   googleMapsUrl: string;
 } & EditorialCafeData &
   GoogleCafeData;

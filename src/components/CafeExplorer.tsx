@@ -7,35 +7,18 @@ import { CAFE_SORTS, filterCafes, type CafeSort } from "@/lib/filter-cafes";
 import { CAFE_FEATURES } from "@/types/cafe";
 import type { Cafe, CafeFeature } from "@/types/cafe";
 import { CafeMap } from "./CafeMap";
+import { CafeCard } from "./cafe/CafeCard";
 import { AreaSelect, OSAKA_AREAS } from "./search/AreaSelect";
-import { FEATURE_LABELS, FeatureTagSelect } from "./search/FeatureTagSelect";
+import { FeatureTagSelect } from "./search/FeatureTagSelect";
 import { SearchForm } from "./search/SearchForm";
 import { SortSelect } from "./search/SortSelect";
 
 const cafes = getCafes();
 
 function hoursSummary(cafe: Cafe) {
+  if (!cafe.businessHours) return "未登録";
   const hours = cafe.businessHours.weekly.monday;
   return hours.open && hours.close ? `${hours.open}–${hours.close}` : "定休日";
-}
-
-function CafeCard({ cafe, selected, onSelect }: { cafe: Cafe; selected: boolean; onSelect: () => void }) {
-  return (
-    <article className={`cafe-card ${selected ? "selected" : ""}`}>
-      <button className="cafe-card-main" type="button" onClick={onSelect} aria-label={`${cafe.name}の詳細を見る`}>
-        <div className="cafe-photo" style={{ background: "linear-gradient(145deg, #647d62, #f4ede2)" }}>
-          <Coffee size={40} strokeWidth={1.2} />
-        </div>
-        <div className="card-body">
-          <div className="card-kicker"><MapPin size={13} /> {cafe.area}</div>
-          <h3>{cafe.name}</h3>
-          <div className="rating"><Star size={14} fill="currentColor" /> <b>{cafe.googleRating}</b><span>（{cafe.googleUserRatingsTotal}件）</span></div>
-          <div className="tags">{cafe.features.map((feature) => <span key={feature}>{FEATURE_LABELS[feature]}</span>)}</div>
-        </div>
-      </button>
-      <button className="heart" type="button" aria-label={`${cafe.name}をお気に入りに追加`}><Heart size={18} /></button>
-    </article>
-  );
 }
 
 export function CafeExplorer() {
@@ -114,7 +97,7 @@ export function CafeExplorer() {
             <div className="list-panel">
               <div className="list-meta"><b>{filtered.length}件</b>のカフェが見つかりました <button onClick={() => setMapOpen(!mapOpen)}><Map size={15} /> 地図で見る</button></div>
               <div className="cards">
-                {filtered.map((cafe) => <CafeCard key={cafe.id} cafe={cafe} selected={selected?.id === cafe.id} onSelect={() => setSelected(cafe)} />)}
+                {filtered.map((cafe) => <CafeCard key={cafe.id} cafe={cafe} />)}
                 {!filtered.length && <div className="empty"><Coffee /><h3>検索結果がありません</h3><p>別のエリアや条件で検索してみてください。</p>{hasFilters && <button className="clear-button" onClick={clearFilters}>条件を解除する</button>}</div>}
               </div>
             </div>
