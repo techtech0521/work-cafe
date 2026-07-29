@@ -19,12 +19,14 @@ jobs:
           fetch-depth: 0
 
       - name: Scan repository and commit history for secrets
-        # Use the OSS CLI image directly. gitleaks-action requires a paid
-        # license for organization-owned repositories, which made this build
-        # fail before linting or compiling the application.
-        uses: docker://ghcr.io/gitleaks/gitleaks:v8.24.2
-        with:
-          args: git /github/workspace --redact --verbose --no-banner
+        # Run the scanner as the runner user so Git can read the checkout
+        # without an ownership mismatch inside the container.
+        run: |
+          docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            --volume "$GITHUB_WORKSPACE:/repo:ro" \
+            ghcr.io/gitleaks/gitleaks:v8.24.2 \
+            git /repo --redact --verbose --no-banner
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
