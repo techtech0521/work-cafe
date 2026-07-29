@@ -87,6 +87,14 @@ class UpdateGooglePlacesTest(unittest.TestCase):
         self.assertNotIn("sample-placeholder", calls[0])
         self.assertEqual(stats["missing"], 1)
 
+    def test_unresolved_place_without_search_fields_makes_no_request(self):
+        request = mock.Mock()
+        with redirect_stderr(io.StringIO()):
+            stats = places.update_cafes([cafe(name="", googlePlaceId="")], "secret",
+                                        force=True, request_json=request)
+        request.assert_not_called()
+        self.assertEqual((stats["missing"], stats["failed"], stats["requests"]), (1, 1, 0))
+
     def test_fresh_entries_are_skipped_unless_forced(self):
         current = datetime(2026, 7, 29, tzinfo=timezone.utc)
         item = cafe(googlePlaceId="known", googleUpdatedAt="2026-07-10T00:00:00Z")
@@ -129,16 +137,17 @@ class UpdateGooglePlacesTest(unittest.TestCase):
         self.assertEqual(stats["limit_skipped"], 2)
         self.assertIn("API request limit", output.getvalue())
 
-    def test_unchanged_values_do_not_modify_data(self):
+    def test_unchanged_values_record_refresh_time_to_avoid_requery(self):
         original = cafe(googlePlaceId="known", googleRating=4.5, googleUserRatingsTotal=20,
                         googleUpdatedAt="2025-01-01T00:00:00.000Z")
         cafes = [original.copy()]
+        current = datetime(2026, 7, 29, 12, 34, 56, tzinfo=timezone.utc)
         stats = places.update_cafes(
-            cafes, "secret", request_json=lambda *_args, **_kwargs:
+            cafes, "secret", now=current, request_json=lambda *_args, **_kwargs:
             {"id": "known", "rating": 4.5, "userRatingCount": 20}
         )
-        self.assertEqual(cafes[0], original)
-        self.assertEqual(stats["changed"], 0)
+        self.assertEqual(cafes[0]["googleUpdatedAt"], "2026-07-29T12:34:56.000Z")
+        self.assertEqual(stats["changed"], 1)
 
     def test_rate_limit_is_retried_with_bounded_backoff(self):
         attempts = []

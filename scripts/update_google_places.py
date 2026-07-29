@@ -127,7 +127,7 @@ def _validate_place(place: dict[str, Any]) -> None:
         raise ApiError("API response contained an invalid rating count")
 
 
-def _apply(cafe: dict[str, Any], place: dict[str, Any], *, new_id: bool) -> bool:
+def _apply(cafe: dict[str, Any], place: dict[str, Any], *, new_id: bool, updated_at: datetime) -> bool:
     _validate_place(place)
     updates: dict[str, Any] = {}
     if new_id:
@@ -136,10 +136,11 @@ def _apply(cafe: dict[str, Any], place: dict[str, Any], *, new_id: bool) -> bool
         updates["googleRating"] = place["rating"]
     if "userRatingCount" in place:
         updates["googleUserRatingsTotal"] = place["userRatingCount"]
+    timestamp = updated_at.astimezone(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
+    updates["googleUpdatedAt"] = timestamp
     changed = any(cafe.get(key) != value for key, value in updates.items())
     if changed:
         cafe.update(updates)
-        cafe["googleUpdatedAt"] = datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
     return changed
 
 
@@ -155,6 +156,8 @@ def update_cafes(
         raise ValueError("refresh_days must not be negative")
     budget = RequestBudget(max_requests)
     now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        raise ValueError("now must be timezone-aware")
     stats = {"missing": sum(not _valid_place_id(cafe.get("googlePlaceId")) for cafe in cafes),
              "success": 0, "failed": 0, "changed": 0, "fresh_skipped": 0,
              "limit_skipped": 0, "requests": 0}
@@ -193,7 +196,9 @@ def update_cafes(
                 if len(matches) != 1:
                     raise ApiError("no unambiguous matching candidate; Place ID was not saved")
                 place, is_new = matches[0], True
-            stats["changed"] += int(_apply(cafe, place, new_id=is_new))
+            # A successful refresh is useful even when rating values are unchanged:
+            # recording it prevents the same cafe from being queried again next run.
+            stats["changed"] += int(_apply(cafe, place, new_id=is_new, updated_at=now))
             stats["success"] += 1
         except RequestLimitReached as error:
             stats["limit_skipped"] += 1
