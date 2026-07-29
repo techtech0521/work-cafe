@@ -14,20 +14,28 @@ const ajv = new Ajv({ allErrors: true, jsonPointers: true });
 const validate = ajv.compile(schema);
 if (!validate(cafes)) {
   for (const error of validate.errors ?? []) {
-    console.error(`${error.instancePath || "/"}: ${error.message}`);
+    // Ajv 6 reports `dataPath`; newer releases call the same value
+    // `instancePath`. Supporting both keeps diagnostics useful when upgraded.
+    console.error(`${error.instancePath || error.dataPath || "/"}: ${error.message}`);
   }
   process.exitCode = 1;
 }
 
-for (const field of ["id", "googlePlaceId"]) {
-  const seen = new Map();
-  for (const [index, cafe] of cafes.entries()) {
-    const previous = seen.get(cafe[field]);
-    if (previous !== undefined) {
-      console.error(`/${index}/${field}: duplicates /${previous}/${field} (${cafe[field]})`);
-      process.exitCode = 1;
+// Do not let the custom checks hide the schema diagnostics when the top-level
+// value is malformed. Field shape errors are owned by the schema validator.
+if (Array.isArray(cafes)) {
+  for (const field of ["id", "googlePlaceId"]) {
+    const seen = new Map();
+    for (const [index, cafe] of cafes.entries()) {
+      const value = cafe?.[field];
+      if (typeof value !== "string") continue;
+      const previous = seen.get(value);
+      if (previous !== undefined) {
+        console.error(`/${index}/${field}: duplicates /${previous}/${field} (${value})`);
+        process.exitCode = 1;
+      }
+      seen.set(value, index);
     }
-    seen.set(cafe[field], index);
   }
 }
 

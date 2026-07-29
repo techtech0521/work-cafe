@@ -42,7 +42,7 @@ GitHub の `GITHUB_TOKEN` で行った push は別の Actions ワークフロー
 現在のカフェデータは `data/cafes.json` で管理し、形式は `data/cafes.schema.json` で定義しています。
 
 1. 店名、エリア、営業時間、設備タグなどを追加または編集します。
-2. `coordinates` に `[緯度, 経度]` の順で位置情報を設定します。
+2. `latitude` と `longitude` に位置情報を設定します。未確定の場合は、片方だけでなく両方を `null` にします。
 3. `npm run dev` で一覧・検索・地図マーカー・詳細表示を確認します。
 4. `npm run build` を実行し、型エラーやビルドエラーがないことを確認します。
 

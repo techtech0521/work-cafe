@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 const baseUrl = process.argv[2];
 if (!baseUrl) throw new Error("usage: node scripts/smoke-check.mjs <base-url>");
 const cafes = JSON.parse(await readFile(new URL("../data/cafes.json", import.meta.url), "utf8"));
+if (!Array.isArray(cafes) || cafes.length === 0) throw new Error("cafe data is empty");
 const requests = [new URL("/", baseUrl), new URL(`/cafes/${encodeURIComponent(cafes[0].id)}`, baseUrl)];
 
 for (const url of requests) {
