@@ -14,6 +14,19 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          # Secret scan must include every commit, not only the triggering commit.
+          fetch-depth: 0
+
+      - name: Scan repository and commit history for secrets
+        # Run the scanner as the runner user so Git can read the checkout
+        # without an ownership mismatch inside the container.
+        run: |
+          docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            --volume "$GITHUB_WORKSPACE:/repo:ro" \
+            ghcr.io/gitleaks/gitleaks:v8.24.2 \
+            git /repo --redact --verbose --no-banner
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
