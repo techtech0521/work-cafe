@@ -5,7 +5,8 @@ import tempfile
 import time
 import unittest
 import urllib.error
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest import mock
 
@@ -72,16 +73,81 @@ class UpdateGooglePlacesTest(unittest.TestCase):
         self.assertEqual(cafes[0]["googlePlaceId"], "new-id")
         self.assertEqual((stats["missing"], stats["changed"]), (1, 1))
 
-    def test_unchanged_values_do_not_modify_data(self):
+    def test_sample_place_id_is_never_sent_to_details(self):
+        cafes = [cafe(googlePlaceId="sample-placeholder")]
+        calls = []
+
+        def request(url, _key, _fields, **_kwargs):
+            calls.append(url)
+            return {"places": []}
+
+        with redirect_stderr(io.StringIO()):
+            stats = places.update_cafes(cafes, "secret", force=True, request_json=request)
+        self.assertEqual(calls, [f"{places.API_ROOT}/places:searchText"])
+        self.assertNotIn("sample-placeholder", calls[0])
+        self.assertEqual(stats["missing"], 1)
+
+    def test_unresolved_place_without_search_fields_makes_no_request(self):
+        request = mock.Mock()
+        with redirect_stderr(io.StringIO()):
+            stats = places.update_cafes([cafe(name="", googlePlaceId="")], "secret",
+                                        force=True, request_json=request)
+        request.assert_not_called()
+        self.assertEqual((stats["missing"], stats["failed"], stats["requests"]), (1, 1, 0))
+
+    def test_fresh_entries_are_skipped_unless_forced(self):
+        current = datetime(2026, 7, 29, tzinfo=timezone.utc)
+        item = cafe(googlePlaceId="known", googleUpdatedAt="2026-07-10T00:00:00Z")
+        request = mock.Mock(return_value={"id": "known"})
+        with redirect_stdout(io.StringIO()):
+            stats = places.update_cafes([item.copy()], "secret", now=current, request_json=request)
+        request.assert_not_called()
+        self.assertEqual(stats["fresh_skipped"], 1)
+
+        places.update_cafes([item.copy()], "secret", now=current, force=True, request_json=request)
+        request.assert_called_once()
+
+    def test_invalid_or_old_timestamp_is_updated(self):
+        current = datetime(2026, 7, 29, tzinfo=timezone.utc)
+        for timestamp in (None, "not-a-date", "2026-01-01T00:00:00Z"):
+            with self.subTest(timestamp=timestamp):
+                request = mock.Mock(return_value={"id": "known"})
+                places.update_cafes([cafe(googlePlaceId="known", googleUpdatedAt=timestamp)],
+                                    "secret", now=current, request_json=request)
+                request.assert_called_once()
+
+    def test_request_limit_counts_retries_and_skips_remaining_cafes(self):
+        calls = []
+
+        def opener(request, timeout):
+            self.assertEqual(timeout, 10)
+            calls.append(request.full_url)
+            raise urllib.error.HTTPError(request.full_url, 429, "limited", {}, None)
+
+        def request(*args, **kwargs):
+            return places._request_json(*args, **kwargs, opener=opener, sleeper=lambda _delay: None)
+
+        output = io.StringIO()
+        with redirect_stdout(output):
+            stats = places.update_cafes([cafe(id="one", googlePlaceId="one"),
+                                         cafe(id="two", googlePlaceId="two")],
+                                        "secret", max_requests=2, request_json=request)
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(stats["requests"], 2)
+        self.assertEqual(stats["limit_skipped"], 2)
+        self.assertIn("API request limit", output.getvalue())
+
+    def test_unchanged_values_record_refresh_time_to_avoid_requery(self):
         original = cafe(googlePlaceId="known", googleRating=4.5, googleUserRatingsTotal=20,
                         googleUpdatedAt="2025-01-01T00:00:00.000Z")
         cafes = [original.copy()]
+        current = datetime(2026, 7, 29, 12, 34, 56, tzinfo=timezone.utc)
         stats = places.update_cafes(
-            cafes, "secret", request_json=lambda *_args, **_kwargs:
+            cafes, "secret", now=current, request_json=lambda *_args, **_kwargs:
             {"id": "known", "rating": 4.5, "userRatingCount": 20}
         )
-        self.assertEqual(cafes[0], original)
-        self.assertEqual(stats["changed"], 0)
+        self.assertEqual(cafes[0]["googleUpdatedAt"], "2026-07-29T12:34:56.000Z")
+        self.assertEqual(stats["changed"], 1)
 
     def test_rate_limit_is_retried_with_bounded_backoff(self):
         attempts = []

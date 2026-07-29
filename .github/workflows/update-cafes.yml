@@ -2,7 +2,7 @@ name: Update cafes
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * 1"
   workflow_dispatch:
 
 concurrency:
@@ -12,7 +12,7 @@ concurrency:
 jobs:
   update:
     if: >-
-      github.ref_type == 'branch' &&
+      github.ref == 'refs/heads/main' &&
       (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     permissions:
@@ -36,7 +36,7 @@ jobs:
       - name: Update cafe data
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
-        run: python scripts/update_google_places.py --fail-on-error
+        run: python scripts/update_google_places.py --refresh-days 30 --max-requests 50 --fail-on-error
 
       - name: Commit and push updated cafe data
         env:

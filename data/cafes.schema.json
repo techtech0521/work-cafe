@@ -56,7 +56,7 @@
         "longitude": { "type": ["number", "null"], "minimum": -180, "maximum": 180 },
         "features": { "type": "array", "uniqueItems": true, "items": { "enum": ["wifi", "power-outlets", "quiet", "long-stay-friendly", "open-late", "spacious", "scenic-view"] } },
         "businessHours": { "$ref": "#/definitions/businessHours" },
-        "googleMapsUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "googleMapsUrl": { "type": "string", "format": "uri", "pattern": "^https://(?:www\\.)?google\\.com/maps(?:/|$)" },
         "workabilityScore": { "$ref": "#/definitions/nullableScore" },
         "coffeeScore": { "$ref": "#/definitions/nullableScore" },
         "atmosphereScore": { "$ref": "#/definitions/nullableScore" },

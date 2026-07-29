@@ -46,10 +46,12 @@ GitHub の `GITHUB_TOKEN` で行った push は別の Actions ワークフロー
 3. `npm run dev` で一覧・検索・地図マーカー・詳細表示を確認します。
 4. `npm run build` を実行し、型エラーやビルドエラーがないことを確認します。
 
-Google Places の評価・口コミ件数は、API キーをコマンドラインやファイルへ保存せず、環境変数から渡して更新できます。
+Google Places の評価・口コミ件数は、API キーをコマンドラインや追跡対象ファイルへ保存せず、サーバー側で動く更新スクリプトへ環境変数から渡して更新できます。React コンポーネントやブラウザから Places API を直接呼ばず、Google API キーを `NEXT_PUBLIC_` 付きの環境変数へ設定しないでください。
 
 ```bash
 GOOGLE_MAPS_API_KEY="..." python scripts/update_google_places.py
+python scripts/update_google_places.py --refresh-days 30 --max-requests 50
+python scripts/update_google_places.py --force --max-requests 20
 ```
 
 ローカルで環境変数ファイルを使う場合は、共有可能な `.env.example` をコピーして値を設定します。`.env` と `.env.*`（`.env.example` を除く）は Git の追跡対象外です。実際のキーを `.env.example` に記載しないでください。
@@ -60,6 +62,7 @@ cp .env.example .env
 
 複数日に分ける場合は、日ごとに異なるゼロ始まりのインデックスを指定します。たとえば3分割の2番目だけを更新するには
 `--shard-count 3 --shard-index 1` を使用します。Place ID が未登録の候補は店名と住所が十分一致した場合だけ自動登録され、曖昧な候補は標準エラーへ警告されます。
+`sample-` で始まる仮 Place ID も未登録として扱い、店名と住所がそろう場合だけ Text Search へフォールバックします。通常は `googleUpdatedAt` が過去30日以内のデータをスキップし、`--refresh-days` で期間、`--max-requests` でリトライを含む実行単位の上限を調整できます。緊急時の `--force` でもリクエスト上限は維持されます。
 
 Leaflet を使用する地図本体は `src/components/map/LeafletMap.tsx` に分離し、`src/components/map/CafeMap.tsx` から `dynamic(..., { ssr: false })` で読み込んでいます。これにより、ブラウザ API を参照する Leaflet がサーバー上で評価されません。
 
@@ -67,8 +70,8 @@ Leaflet を使用する地図本体は `src/components/map/LeafletMap.tsx` に�
 
 ### 初期設定
 
-1. リポジトリの **Settings > Secrets and variables > Actions** で、Google API キーを Repository secret の `GOOGLE_MAPS_API_KEY` として登録します。キーをワークフロー、ソースコード、ログ、Issue へ直接記載しません。
-2. Google Cloud で請求予算と予算アラートを設定し、API の利用量アラートも有効にします。想定する日次更新回数を基準に Places API のクォータ上限を設定し、費用やリクエスト数の急増を早期に検知できるようにします。
+1. ローカルでは Git 管理外の `.env`、GitHub Actions では Repository secret の `GOOGLE_MAPS_API_KEY` だけにキーを登録します。キーを Vercel、クライアント用環境変数、ワークフロー、ソースコード、ログ、Issue へ直接記載しません。
+2. Google Cloud で請求予算と予算アラートを設定し、API の利用量アラートも有効にします。週1回（月曜 00:00 UTC）の定期更新と手動実行を基準に Places API のクォータ上限を設定し、費用やリクエスト数の急増を早期に検知できるようにします。
 3. キーの **API restrictions** は、更新スクリプトが実際に使用する **Places API** だけに限定します。Custom Search API を実装で使用する場合に限り、その API も許可し、未使用の API は許可しません。
 4. GitHub-hosted runner の送信元 IP アドレスは固定されないため、固定 IP による **Application restrictions** を更新ジョブの前提にしません。API 制限、クォータ、監視、および Actions Secret によってリスクを抑えます。
 
