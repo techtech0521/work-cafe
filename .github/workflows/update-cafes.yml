@@ -24,6 +24,9 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
+          # A dedicated token makes the bot push a normal push event, which
+          # starts CI and the Vercel Git integration build.
+          token: ${{ secrets.CAFE_UPDATE_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0

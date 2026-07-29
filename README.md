@@ -4,7 +4,7 @@
 
 ## 必要環境
 
-- Node.js 20.9 以上
+- Node.js 22 以上（単体テストで組み込みの TypeScript 実行機能を使用します）
 - npm 10.x
 
 ## ローカル開発
@@ -25,16 +25,24 @@ npm run build
 npm start
 ```
 
-静的解析は `npm run lint` で実行できます。
+静的検証は `npm run typecheck`、`npm run lint`、`npm test`、`npm run validate:data` で個別に実行できます。
 
-Pull Request と `main` ブランチへの push では、GitHub Actions が `npm install`、静的解析、本番ビルドを順番に実行します。ローカルのネットワーク制限により npm registry に接続できない場合も、CI の結果から依存解決とビルド可否を確認できます。
+Pull Request と `main` ブランチへの push では、GitHub Actions が依存関係の固定インストール、JSON Schema によるカフェデータ検証、TypeScript 型チェック、Lint、単体テスト、Next.js 本番ビルド、ローカル本番サーバーのスモークチェックを実行します。この検証ジョブは Google API を呼ばず、Pull Request へ Secrets を渡しません。
+
+## Vercel デプロイ
+
+1. Vercel の **Add New > Project** からこの GitHub リポジトリを Import し、Framework Preset が **Next.js**、Production Branch が `main` であることを確認します。
+2. **Settings > Git** の Production Branch と自動デプロイを有効にします。`main` への通常の push とカフェ更新ボットによる push のどちらも Vercel ビルドの対象とし、Ignored Build Step でボットのコミットを除外しないでください。
+3. Vercel GitHub Integration が返す成功した `main` の deployment status を受けて、CI の `smoke-deployment` ジョブが公開 URL のトップページと最初のカフェ詳細ページを取得し、カフェデータが描画されたことを確認します。認証で保護された Preview ではなく、公開された Production Deployment を対象にします。
+
+GitHub の `GITHUB_TOKEN` で行った push は別の Actions ワークフローを起動しないため、更新ワークフロー専用の fine-grained personal access token（対象リポジトリの **Contents: Read and write** のみ）を Actions Secret `CAFE_UPDATE_TOKEN` に登録します。更新ワークフローはこのトークンで commit を push するため、その commit でも `main` の CI と Vercel Git Integration の自動ビルドが起動します。この Secret は更新ジョブだけが参照し、Pull Request の CI には渡されません。
 
 ## カフェデータの更新
 
-現在のサンプルデータは `src/data/cafes.ts` の `cafes` 配列で管理しています。
+現在のカフェデータは `data/cafes.json` で管理し、形式は `data/cafes.schema.json` で定義しています。
 
 1. 店名、エリア、営業時間、設備タグなどを追加または編集します。
-2. `coordinates` に `[緯度, 経度]` の順で位置情報を設定します。
+2. `latitude` と `longitude` に位置情報を設定します。未確定の場合は、片方だけでなく両方を `null` にします。
 3. `npm run dev` で一覧・検索・地図マーカー・詳細表示を確認します。
 4. `npm run build` を実行し、型エラーやビルドエラーがないことを確認します。
 
