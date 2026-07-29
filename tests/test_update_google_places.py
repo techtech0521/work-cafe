@@ -126,6 +126,25 @@ class UpdateGooglePlacesTest(unittest.TestCase):
             self.assertEqual(result, 0)
             self.assertEqual(path.stat().st_mtime_ns, initial_mtime)
 
+    def test_fail_on_error_does_not_write_partial_updates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "cafes.json"
+            original = json.dumps([cafe(googlePlaceId="known")]) + "\n"
+            path.write_text(original, encoding="utf-8")
+            stderr = io.StringIO()
+
+            def partially_update(cafes, *_args, **_kwargs):
+                cafes[0]["googleRating"] = 4.8
+                return {"missing": 0, "success": 1, "failed": 1, "changed": 1}
+
+            with mock.patch.dict(os.environ, {"GOOGLE_MAPS_API_KEY": "secret"}), \
+                    mock.patch.object(places, "update_cafes", side_effect=partially_update), \
+                    redirect_stderr(stderr):
+                result = places.main(["--data", str(path), "--fail-on-error"])
+            self.assertEqual(result, 2)
+            self.assertEqual(path.read_text(encoding="utf-8"), original)
+            self.assertIn("1 cafe update(s) failed", stderr.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()
