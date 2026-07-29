@@ -197,6 +197,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--data", type=Path, default=Path("data/cafes.json"))
     parser.add_argument("--shard-count", type=int, default=1, help="number of round-robin groups")
     parser.add_argument("--shard-index", type=int, default=0, help="zero-based group to update")
+    parser.add_argument(
+        "--fail-on-error", action="store_true",
+        help="fail without writing the data file if any cafe could not be updated",
+    )
     args = parser.parse_args(argv)
     if args.shard_count < 1 or not 0 <= args.shard_index < args.shard_count:
         parser.error("--shard-count must be positive and --shard-index must be in its range")
@@ -208,6 +212,8 @@ def main(argv: list[str] | None = None) -> int:
         cafes = _read(args.data)
         before = json.dumps(cafes, ensure_ascii=False, separators=(",", ":"))
         stats = update_cafes(cafes, api_key, shard_count=args.shard_count, shard_index=args.shard_index)
+        if args.fail_on_error and stats["failed"]:
+            raise RuntimeError(f"{stats['failed']} cafe update(s) failed; data was not written")
         if before != json.dumps(cafes, ensure_ascii=False, separators=(",", ":")):
             _atomic_write(args.data, cafes)
     except (RuntimeError, OSError, ValueError) as error:

@@ -33,7 +33,7 @@ jobs:
       - name: Update cafe data
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
-        run: python scripts/update_google_places.py
+        run: python scripts/update_google_places.py --fail-on-error
 
       - name: Commit and push updated cafe data
         env:
