@@ -60,10 +60,10 @@
         "workabilityScore": { "$ref": "#/definitions/nullableScore" },
         "coffeeScore": { "$ref": "#/definitions/nullableScore" },
         "atmosphereScore": { "$ref": "#/definitions/nullableScore" },
-        "googlePlaceId": { "type": "string", "minLength": 1 },
+        "googlePlaceId": { "type": ["string", "null"], "minLength": 1 },
         "googleRating": { "$ref": "#/definitions/nullableScore" },
         "googleUserRatingsTotal": { "type": ["integer", "null"], "minimum": 0 },
-        "googleUpdatedAt": { "type": "string", "format": "date-time" },
+        "googleUpdatedAt": { "type": ["string", "null"], "format": "date-time" },
         "publishedAt": { "type": "string", "format": "date" }
       }
     }

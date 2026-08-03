@@ -60,8 +60,6 @@ function isCafe(value: unknown): value is Cafe {
     "address",
     "area",
     "googleMapsUrl",
-    "googlePlaceId",
-    "googleUpdatedAt",
     "publishedAt",
   ] as const;
   const nullableCoordinateFields = [
@@ -72,11 +70,17 @@ function isCafe(value: unknown): value is Cafe {
     "workabilityScore", "coffeeScore", "atmosphereScore",
     "googleRating", "googleUserRatingsTotal",
   ] as const;
+  const nullableStringFields = ["googlePlaceId", "googleUpdatedAt"] as const;
 
   return (
     stringFields.every((field) => {
       const fieldValue = value[field];
       return typeof fieldValue === "string" && fieldValue.length > 0;
+    }) &&
+    nullableStringFields.every((field) => {
+      const fieldValue = value[field];
+      return fieldValue === null ||
+        (typeof fieldValue === "string" && fieldValue.length > 0);
     }) &&
     nullableCoordinateFields.every((field) => {
       const fieldValue = value[field];
