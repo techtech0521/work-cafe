@@ -42,10 +42,12 @@ export type EditorialCafeData = {
 
 /** Values sourced from Google and safe for the Google sync job to replace. */
 export type GoogleCafeData = {
-  googlePlaceId: string;
+  /** `null` until the first successful Google Places match. */
+  googlePlaceId: string | null;
   googleRating: number | null;
   googleUserRatingsTotal: number | null;
-  googleUpdatedAt: string;
+  /** `null` until Google-owned fields have been refreshed. */
+  googleUpdatedAt: string | null;
 };
 
 export type Cafe = {

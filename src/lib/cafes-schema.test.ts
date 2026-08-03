@@ -26,3 +26,17 @@ test("googleMapsUrl only accepts Google Maps HTTPS URLs", () => {
     assert.equal(validate([{ ...base, googleMapsUrl: url }]), false, url);
   }
 });
+
+test("Google fields may be null before the first Places sync", () => {
+  assert.equal(
+    validate([{
+      ...base,
+      googlePlaceId: null,
+      googleRating: null,
+      googleUserRatingsTotal: null,
+      googleUpdatedAt: null,
+    }]),
+    true,
+    JSON.stringify(validate.errors),
+  );
+});

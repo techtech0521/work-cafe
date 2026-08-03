@@ -1,15 +1,639 @@
 [
   {
-    "id": "brooklyn-roasting-nakanoshima",
-    "name": "Brooklyn Roasting Company 北浜店",
-    "address": "大阪府大阪市中央区北浜2丁目",
-    "area": "中之島",
-    "latitude": 34.6914,
-    "longitude": 135.5063,
+    "id": "accea-cafe-umeda",
+    "name": "アクセアカフェ梅田店",
+    "address": "大阪府大阪市北区曽根崎2-5-10 梅田パシフィックビルディング1F",
+    "area": "梅田",
+    "latitude": 34.6993,
+    "longitude": 135.5012,
     "features": [
       "wifi",
       "power-outlets",
       "quiet",
+      "long-stay-friendly",
+      "open-late"
+    ],
+    "businessHours": {
+      "weekly": {
+        "monday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "tuesday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "wednesday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "thursday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "friday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "saturday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "sunday": {
+          "open": "00:00",
+          "close": "23:59"
+        }
+      },
+      "regularClosedDays": []
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%A2%E3%82%AB%E3%83%95%E3%82%A7%E6%A2%85%E7%94%B0%E5%BA%97%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E6%9B%BD%E6%A0%B9%E5%B4%8E2-5-10%20%E6%A2%85%E7%94%B0%E3%83%91%E3%82%B7%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E3%83%93%E3%83%AB%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B01F",
+    "workabilityScore": 4.9,
+    "coffeeScore": 3.2,
+    "atmosphereScore": 4.1,
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
+  },
+  {
+    "id": "accea-cafe-nankai-namba",
+    "name": "アクセアカフェ南海なんば駅店",
+    "address": "大阪府大阪市中央区難波5-1-60 南海なんばターミナルビル なんばCITY本館2F",
+    "area": "なんば",
+    "latitude": 34.6629,
+    "longitude": 135.5019,
+    "features": [
+      "wifi",
+      "power-outlets",
+      "quiet",
+      "long-stay-friendly"
+    ],
+    "businessHours": {
+      "weekly": {
+        "monday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "tuesday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "thursday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "friday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "09:00",
+          "close": "21:00"
+        },
+        "sunday": {
+          "open": "09:00",
+          "close": "21:00"
+        }
+      },
+      "regularClosedDays": []
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%A2%E3%82%AB%E3%83%95%E3%82%A7%E5%8D%97%E6%B5%B7%E3%81%AA%E3%82%93%E3%81%B0%E9%A7%85%E5%BA%97%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E9%9B%A3%E6%B3%A25-1-60%20%E3%81%AA%E3%82%93%E3%81%B0CITY%E6%9C%AC%E9%A4%A82F",
+    "workabilityScore": 4.8,
+    "coffeeScore": 3.2,
+    "atmosphereScore": 4.0,
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
+  },
+  {
+    "id": "accea-cafe-shinsaibashi",
+    "name": "アクセアカフェ心斎橋店",
+    "address": "大阪府大阪市中央区南船場4-4-3 心斎橋東急ビル4F",
+    "area": "心斎橋",
+    "latitude": 34.6754,
+    "longitude": 135.5004,
+    "features": [
+      "wifi",
+      "power-outlets",
+      "quiet",
+      "long-stay-friendly"
+    ],
+    "businessHours": {
+      "weekly": {
+        "monday": {
+          "open": "07:30",
+          "close": "22:00"
+        },
+        "tuesday": {
+          "open": "07:30",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "07:30",
+          "close": "22:00"
+        },
+        "thursday": {
+          "open": "07:30",
+          "close": "22:00"
+        },
+        "friday": {
+          "open": "07:30",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "07:30",
+          "close": "22:00"
+        },
+        "sunday": {
+          "open": "07:30",
+          "close": "22:00"
+        }
+      },
+      "regularClosedDays": []
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%A2%E3%82%AB%E3%83%95%E3%82%A7%E5%BF%83%E6%96%8E%E6%A9%8B%E5%BA%97%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%8D%97%E8%88%B9%E5%A0%B44-4-3%20%E5%BF%83%E6%96%8E%E6%A9%8B%E6%9D%B1%E6%80%A5%E3%83%93%E3%83%AB4F",
+    "workabilityScore": 4.8,
+    "coffeeScore": 3.2,
+    "atmosphereScore": 4.0,
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
+  },
+  {
+    "id": "cafe-onthe-dochika",
+    "name": "CAFÉ ONthe ドーチカ",
+    "address": "大阪府大阪市北区堂島1丁目 堂島地下街9号",
+    "area": "西梅田",
+    "latitude": 34.6961,
+    "longitude": 135.4958,
+    "features": [
+      "wifi",
+      "power-outlets",
+      "quiet",
+      "long-stay-friendly"
+    ],
+    "businessHours": {
+      "weekly": {
+        "monday": {
+          "open": "08:30",
+          "close": "21:00"
+        },
+        "tuesday": {
+          "open": "08:30",
+          "close": "21:00"
+        },
+        "wednesday": {
+          "open": "08:30",
+          "close": "21:00"
+        },
+        "thursday": {
+          "open": "08:30",
+          "close": "21:00"
+        },
+        "friday": {
+          "open": "08:30",
+          "close": "21:00"
+        },
+        "saturday": {
+          "open": "08:30",
+          "close": "19:00"
+        },
+        "sunday": {
+          "open": "08:30",
+          "close": "19:00"
+        }
+      },
+      "regularClosedDays": [
+        "第3日曜日",
+        "1月1日",
+        "年末年始"
+      ]
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=CAF%C3%89%20ONthe%20%E3%83%89%E3%83%BC%E3%83%81%E3%82%AB%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E5%A0%82%E5%B3%B61%E4%B8%81%E7%9B%AE%20%E5%A0%82%E5%B3%B6%E5%9C%B0%E4%B8%8B%E8%A1%979%E5%8F%B7",
+    "workabilityScore": 4.9,
+    "coffeeScore": 4.2,
+    "atmosphereScore": 4.5,
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
+  },
+  {
+    "id": "oshigoto-cafe-shinsaibashi",
+    "name": "おしごとカフェ心斎橋",
+    "address": "大阪府大阪市中央区心斎橋筋1-3-10 B1F〜2F",
+    "area": "心斎橋",
+    "latitude": 34.6735,
+    "longitude": 135.5022,
+    "features": [
+      "wifi",
+      "power-outlets",
+      "quiet",
+      "long-stay-friendly",
+      "open-late"
+    ],
+    "businessHours": {
+      "weekly": {
+        "monday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "tuesday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "wednesday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "thursday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "friday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "saturday": {
+          "open": "00:00",
+          "close": "23:59"
+        },
+        "sunday": {
+          "open": "00:00",
+          "close": "23:59"
+        }
+      },
+      "regularClosedDays": []
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E3%81%97%E3%81%94%E3%81%A8%E3%82%AB%E3%83%95%E3%82%A7%E5%BF%83%E6%96%8E%E6%A9%8B%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%BF%83%E6%96%8E%E6%A9%8B%E7%AD%8B1-3-10",
+    "workabilityScore": 4.9,
+    "coffeeScore": 3.6,
+    "atmosphereScore": 4.1,
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
+  },
+  {
+    "id": "share-lounge-quartz-shinsaibashi",
+    "name": "SHARE LOUNGE クオーツ心斎橋",
+    "address": "大阪府大阪市中央区南船場3-12-14 クオーツ心斎橋4F",
+    "area": "心斎橋",
+    "latitude": 34.6758,
+    "longitude": 135.501,
+    "features": [
+      "wifi",
+      "power-outlets",
+      "quiet",
+      "long-stay-friendly",
+      "spacious"
+    ],
+    "businessHours": {
+      "weekly": {
+        "monday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "tuesday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "thursday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "friday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "sunday": {
+          "open": "08:00",
+          "close": "22:00"
+        }
+      },
+      "regularClosedDays": [
+        "施設に準ずる"
+      ]
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=SHARE%20LOUNGE%20%E3%82%AF%E3%82%AA%E3%83%BC%E3%83%84%E5%BF%83%E6%96%8E%E6%A9%8B%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%8D%97%E8%88%B9%E5%A0%B43-12-14",
+    "workabilityScore": 4.8,
+    "coffeeScore": 4.0,
+    "atmosphereScore": 4.6,
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
+  },
+  {
+    "id": "share-lounge-umeda-tsutaya",
+    "name": "SHARE LOUNGE 梅田 蔦屋書店",
+    "address": "大阪府大阪市北区梅田3-1-3 ルクア イーレ9F",
+    "area": "梅田",
+    "latitude": 34.7025,
+    "longitude": 135.4959,
+    "features": [
+      "wifi",
+      "power-outlets",
+      "quiet",
+      "long-stay-friendly",
+      "spacious",
+      "scenic-view"
+    ],
+    "businessHours": {
+      "weekly": {
+        "monday": {
+          "open": "08:30",
+          "close": "21:00"
+        },
+        "tuesday": {
+          "open": "08:30",
+          "close": "21:00"
+        },
+        "wednesday": {
+          "open": "08:30",
+          "close": "21:00"
+        },
+        "thursday": {
+          "open": "08:30",
+          "close": "21:00"
+        },
+        "friday": {
+          "open": "08:30",
+          "close": "21:00"
+        },
+        "saturday": {
+          "open": "08:30",
+          "close": "21:00"
+        },
+        "sunday": {
+          "open": "08:30",
+          "close": "21:00"
+        }
+      },
+      "regularClosedDays": [
+        "不定休"
+      ]
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=SHARE%20LOUNGE%20%E6%A2%85%E7%94%B0%20%E8%94%A6%E5%B1%8B%E6%9B%B8%E5%BA%97%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E6%A2%85%E7%94%B03-1-3%20%E3%83%AB%E3%82%AF%E3%82%A2%20%E3%82%A4%E3%83%BC%E3%83%AC9F",
+    "workabilityScore": 4.8,
+    "coffeeScore": 4.0,
+    "atmosphereScore": 4.8,
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
+  },
+  {
+    "id": "tullys-grand-front-osaka-north-9f",
+    "name": "タリーズコーヒー グランフロント大阪北館9F店",
+    "address": "大阪府大阪市北区大深町3-1 グランフロント大阪北館9F",
+    "area": "梅田",
+    "latitude": 34.7056,
+    "longitude": 135.4949,
+    "features": [
+      "wifi",
+      "power-outlets",
+      "spacious"
+    ],
+    "businessHours": {
+      "weekly": {
+        "monday": {
+          "open": "07:30",
+          "close": "20:00"
+        },
+        "tuesday": {
+          "open": "07:30",
+          "close": "20:00"
+        },
+        "wednesday": {
+          "open": "07:30",
+          "close": "20:00"
+        },
+        "thursday": {
+          "open": "07:30",
+          "close": "20:00"
+        },
+        "friday": {
+          "open": "07:30",
+          "close": "20:00"
+        },
+        "saturday": {
+          "open": "11:00",
+          "close": "20:00"
+        },
+        "sunday": {
+          "open": "11:00",
+          "close": "20:00"
+        }
+      },
+      "regularClosedDays": []
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E3%82%BF%E3%83%AA%E3%83%BC%E3%82%BA%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC%20%E3%82%B0%E3%83%A9%E3%83%B3%E3%83%95%E3%83%AD%E3%83%B3%E3%83%88%E5%A4%A7%E9%98%AA%E5%8C%97%E9%A4%A89F%E5%BA%97%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E5%A4%A7%E6%B7%B1%E7%94%BA3-1%20%E3%82%B0%E3%83%A9%E3%83%B3%E3%83%95%E3%83%AD%E3%83%B3%E3%83%88%E5%A4%A7%E9%98%AA%E5%8C%97%E9%A4%A89F",
+    "workabilityScore": 4.2,
+    "coffeeScore": 4.0,
+    "atmosphereScore": 4.1,
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
+  },
+  {
+    "id": "starbucks-tsutaya-bookstore-inogate-osaka",
+    "name": "スターバックス コーヒー TSUTAYA BOOKSTORE イノゲート大阪店",
+    "address": "大阪府大阪市北区梅田3-2-123 イノゲート大阪6F",
+    "area": "梅田",
+    "latitude": 34.7021,
+    "longitude": 135.4935,
+    "features": [
+      "wifi",
+      "spacious"
+    ],
+    "businessHours": {
+      "weekly": {
+        "monday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "tuesday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "thursday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "friday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "08:00",
+          "close": "22:00"
+        },
+        "sunday": {
+          "open": "08:00",
+          "close": "22:00"
+        }
+      },
+      "regularClosedDays": [
+        "不定休"
+      ]
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%90%E3%83%83%E3%82%AF%E3%82%B9%20%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC%20TSUTAYA%20BOOKSTORE%20%E3%82%A4%E3%83%8E%E3%82%B2%E3%83%BC%E3%83%88%E5%A4%A7%E9%98%AA%E5%BA%97%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E6%A2%85%E7%94%B03-2-123%20%E3%82%A4%E3%83%8E%E3%82%B2%E3%83%BC%E3%83%88%E5%A4%A7%E9%98%AA6F",
+    "workabilityScore": 4.2,
+    "coffeeScore": 4.0,
+    "atmosphereScore": 4.4,
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
+  },
+  {
+    "id": "doutor-hanshin-osaka-umeda-station",
+    "name": "ドトールコーヒーショップ 阪神大阪梅田駅店",
+    "address": "大阪府大阪市北区梅田3 大阪駅前地下街7",
+    "area": "梅田",
+    "latitude": 34.699,
+    "longitude": 135.4973,
+    "features": [
+      "wifi",
+      "power-outlets"
+    ],
+    "businessHours": {
+      "weekly": {
+        "monday": {
+          "open": "06:30",
+          "close": "22:00"
+        },
+        "tuesday": {
+          "open": "06:30",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "06:30",
+          "close": "22:00"
+        },
+        "thursday": {
+          "open": "06:30",
+          "close": "22:00"
+        },
+        "friday": {
+          "open": "06:30",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "07:00",
+          "close": "22:30"
+        },
+        "sunday": {
+          "open": "07:00",
+          "close": "22:00"
+        }
+      },
+      "regularClosedDays": []
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E3%83%89%E3%83%88%E3%83%BC%E3%83%AB%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%83%E3%83%97%20%E9%98%AA%E7%A5%9E%E5%A4%A7%E9%98%AA%E6%A2%85%E7%94%B0%E9%A7%85%E5%BA%97%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E6%A2%85%E7%94%B03%20%E5%A4%A7%E9%98%AA%E9%A7%85%E5%89%8D%E5%9C%B0%E4%B8%8B%E8%A1%977",
+    "workabilityScore": 4.0,
+    "coffeeScore": 3.7,
+    "atmosphereScore": 3.7,
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
+  },
+  {
+    "id": "excelsior-caffe-shinsaibashi",
+    "name": "エクセルシオール カフェ 心斎橋店",
+    "address": "大阪府大阪市中央区心斎橋筋2-3-23",
+    "area": "心斎橋",
+    "latitude": 34.6705,
+    "longitude": 135.5017,
+    "features": [
+      "wifi",
+      "power-outlets",
+      "spacious",
+      "open-late"
+    ],
+    "businessHours": {
+      "weekly": {
+        "monday": {
+          "open": "08:45",
+          "close": "22:00"
+        },
+        "tuesday": {
+          "open": "08:45",
+          "close": "22:00"
+        },
+        "wednesday": {
+          "open": "08:45",
+          "close": "22:00"
+        },
+        "thursday": {
+          "open": "08:45",
+          "close": "22:00"
+        },
+        "friday": {
+          "open": "08:45",
+          "close": "22:00"
+        },
+        "saturday": {
+          "open": "08:45",
+          "close": "22:00"
+        },
+        "sunday": {
+          "open": "08:45",
+          "close": "22:00"
+        }
+      },
+      "regularClosedDays": []
+    },
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E3%82%A8%E3%82%AF%E3%82%BB%E3%83%AB%E3%82%B7%E3%82%AA%E3%83%BC%E3%83%AB%20%E3%82%AB%E3%83%95%E3%82%A7%20%E5%BF%83%E6%96%8E%E6%A9%8B%E5%BA%97%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%BF%83%E6%96%8E%E6%A9%8B%E7%AD%8B2-3-23",
+    "workabilityScore": 4.2,
+    "coffeeScore": 3.9,
+    "atmosphereScore": 4.0,
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
+  },
+  {
+    "id": "blue-bottle-coffee-shinsaibashi",
+    "name": "ブルーボトルコーヒー 心斎橋カフェ",
+    "address": "大阪府大阪市中央区南船場4-7-23 心斎橋TKビル1F",
+    "area": "心斎橋",
+    "latitude": 34.6769,
+    "longitude": 135.4994,
+    "features": [
+      "wifi",
       "scenic-view"
     ],
     "businessHours": {
@@ -45,80 +669,23 @@
       },
       "regularClosedDays": []
     },
-    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Kissa%20Common%20%E6%B8%85%E6%BE%84%E7%99%BD%E6%B2%B3",
-    "workabilityScore": 4.8,
-    "coffeeScore": 4.6,
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=%E3%83%96%E3%83%AB%E3%83%BC%E3%83%9C%E3%83%88%E3%83%AB%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC%20%E5%BF%83%E6%96%8E%E6%A9%8B%E3%82%AB%E3%83%95%E3%82%A7%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%8D%97%E8%88%B9%E5%A0%B44-7-23%20%E5%BF%83%E6%96%8E%E6%A9%8BTK%E3%83%93%E3%83%AB1F",
+    "workabilityScore": 3.8,
+    "coffeeScore": 4.8,
     "atmosphereScore": 4.7,
-    "googlePlaceId": "sample-kissa-common",
-    "googleRating": 4.8,
-    "googleUserRatingsTotal": 126,
-    "googleUpdatedAt": "2026-07-27T00:00:00.000Z",
-    "publishedAt": "2026-07-20"
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
   },
   {
-    "id": "whitebird-umeda",
-    "name": "Whitebird coffee stand",
-    "address": "大阪府大阪市北区曽根崎2丁目",
-    "area": "梅田",
-    "latitude": 34.7006,
-    "longitude": 135.5006,
-    "features": [
-      "wifi",
-      "power-outlets",
-      "long-stay-friendly"
-    ],
-    "businessHours": {
-      "weekly": {
-        "monday": {
-          "open": "09:00",
-          "close": "19:00"
-        },
-        "tuesday": {
-          "open": "09:00",
-          "close": "19:00"
-        },
-        "wednesday": {
-          "open": null,
-          "close": null
-        },
-        "thursday": {
-          "open": "09:00",
-          "close": "19:00"
-        },
-        "friday": {
-          "open": "09:00",
-          "close": "19:00"
-        },
-        "saturday": {
-          "open": "09:00",
-          "close": "19:00"
-        },
-        "sunday": {
-          "open": "09:00",
-          "close": "19:00"
-        }
-      },
-      "regularClosedDays": [
-        "水曜日"
-      ]
-    },
-    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=WOODWORK%20Coffee%20%E8%94%B5%E5%89%8D",
-    "workabilityScore": 4.6,
-    "coffeeScore": 4.7,
-    "atmosphereScore": 4.5,
-    "googlePlaceId": "sample-woodwork-coffee",
-    "googleRating": 4.6,
-    "googleUserRatingsTotal": 89,
-    "googleUpdatedAt": "2026-06-18T00:00:00.000Z",
-    "publishedAt": "2026-06-10"
-  },
-  {
-    "id": "brooklyn-parlor-shinsaibashi",
+    "id": "brooklyn-parlor-osaka",
     "name": "Brooklyn Parlor OSAKA",
-    "address": "大阪府大阪市中央区西心斎橋2丁目",
+    "address": "大阪府大阪市中央区西心斎橋2-2-3 A-PLACE心斎橋 B1F",
     "area": "心斎橋",
     "latitude": 34.6708,
-    "longitude": 135.4992,
+    "longitude": 135.5001,
     "features": [
       "wifi",
       "spacious",
@@ -127,44 +694,46 @@
     "businessHours": {
       "weekly": {
         "monday": {
-          "open": "10:00",
-          "close": "23:00"
+          "open": "11:00",
+          "close": "22:00"
         },
         "tuesday": {
-          "open": "10:00",
-          "close": "23:00"
+          "open": "11:00",
+          "close": "22:00"
         },
         "wednesday": {
-          "open": "10:00",
-          "close": "23:00"
+          "open": "11:00",
+          "close": "22:00"
         },
         "thursday": {
-          "open": "10:00",
-          "close": "23:00"
+          "open": "11:00",
+          "close": "22:00"
         },
         "friday": {
-          "open": "10:00",
-          "close": "23:00"
+          "open": "11:00",
+          "close": "22:00"
         },
         "saturday": {
-          "open": "10:00",
-          "close": "23:00"
+          "open": "11:00",
+          "close": "22:00"
         },
         "sunday": {
-          "open": "10:00",
-          "close": "23:00"
+          "open": "11:00",
+          "close": "22:00"
         }
       },
-      "regularClosedDays": []
+      "regularClosedDays": [
+        "不定休"
+      ]
     },
-    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Nui.%20Lounge%20%E8%94%B5%E5%89%8D",
-    "workabilityScore": 4.5,
-    "coffeeScore": 4.4,
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Brooklyn%20Parlor%20OSAKA%20%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E8%A5%BF%E5%BF%83%E6%96%8E%E6%A9%8B2-2-3%20A-PLACE%E5%BF%83%E6%96%8E%E6%A9%8B%20B1F",
+    "workabilityScore": 4.0,
+    "coffeeScore": 4.1,
     "atmosphereScore": 4.8,
-    "googlePlaceId": "sample-nui-lounge",
-    "googleRating": 4.5,
-    "googleUserRatingsTotal": 214,
-    "googleUpdatedAt": "2026-05-02T00:00:00.000Z",
-    "publishedAt": "2026-05-01"
+    "googlePlaceId": null,
+    "googleRating": null,
+    "googleUserRatingsTotal": null,
+    "googleUpdatedAt": null,
+    "publishedAt": "2026-08-03"
   }
 ]
